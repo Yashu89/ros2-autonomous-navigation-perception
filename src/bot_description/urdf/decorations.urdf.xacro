@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!--
+Software License Agreement (BSD)
+
+\file      decorations.urdf.xacro
+\authors   Paul Bovbel <pbovbel@clearpathrobotics.com>, Devon Ash <dash@clearpathrobotics.com>
+\copyright Copyright (c) 2015, Clearpath Robotics, Inc., All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the
+   following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+   following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Clearpath Robotics nor the names of its contributors may be used to endorse or promote
+   products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WAR-
+RANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, IN-
+DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<robot name="bot_decorations" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <material name="dark_grey"><color rgba="0.2 0.2 0.2 1.0" /></material>
+  <material name="medium_grey"><color rgba="0.6 0.6 0.6 1.0" /></material>
+  <material name="light_grey"><color rgba="0.8 0.8 0.8 1.0" /></material>
+  <material name="yellow"><color rgba="0.8 0.8 0.0 1.0" /></material>
+  <material name="black"><color rgba="0.15 0.15 0.15 1.0" /></material>
+  <material name="white"><color rgba="1.0 1.0 1.0 1.0" /></material>
+  <material name="red"><color rgba="1.0 0.0 0.0 1.0" /></material>
+
+  <xacro:macro name="bot_decorate">
+
+    <!--
+      ENVIRONMENT VARIABLES: Parse environment variables into easy to use xacro:property types
+    -->
+    <!-- Bumpers -->
+    <xacro:property name="husky_front_bumper_enable"    value="$(optenv HUSKY_FRONT_BUMPER 1)" />
+    <xacro:property name="husky_rear_bumper_enable"     value="$(optenv HUSKY_REAR_BUMPER 1)" />
+
+    <!-- Top Plate -->
+    <xacro:property name="top_plate_enable"             value="$(optenv HUSKY_TOP_PLATE_ENABLED true)"/>
+    <!--
+      CHASSIS: Spawn and attach default chassis.
+               Currently, no customization available.
+    -->
+    <!-- Spawn Husky chassis -->
+    <link name="top_chassis_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://bot_description/meshes/top_chassis.dae" />
+        </geometry>
+      </visual>
+    </link>
+
+    <!-- Attach chassis to the robot -->
+    <joint name="top_chassis_joint" type="fixed">
+      <parent link="base_link" />
+      <child link="top_chassis_link" />
+    </joint>
+
+    <!--
+      BUMPERS: Spawn and attach user defined bumpers
+    -->
+    <!-- Spawn front bumper link -->
+    <xacro:if value="${husky_front_bumper_enable}">
+        <link name="front_bumper_link">
+          <visual>
+            <geometry>
+              <mesh filename="package://bot_description/meshes/bumper.dae" />
+            </geometry>
+          </visual>
+        </link>
+      <!-- Attach front bumper -->
+      <joint name="front_bumper" type="fixed">
+        <origin xyz="0.48 0 0.091" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="front_bumper_link" />
+      </joint>
+    </xacro:if>
+
+    <!-- Spawn rear bumper link -->
+    <xacro:if value="${husky_rear_bumper_enable}">
+      <link name="rear_bumper_link">
+        <visual>
+          <geometry>
+            <mesh filename="package://bot_description/meshes/bumper.dae" />
+          </geometry>
+        </visual>
+      </link>
+
+      <!-- Attach rear bumper -->
+      <joint name="rear_bumper" type="fixed">
+        <origin xyz="-0.48 0 0.091" rpy="0 0 ${M_PI}" />
+        <parent link="base_link" />
+        <child link="rear_bumper_link" />
+      </joint>
+    </xacro:if>
+
+    <!--
+      TOP PLATE: Spawn and attach user defined top plate.
+                  HUSKY_TOP_PLATE_ENABLED must be set to TRUE to add any kind of top plate.
+                  Further customization can be achieved by setting the following variables:
+                    - HUSKY_LARGE_TOP_PLATE_ENABLED: Replace default top plate with large top plate
+                    - HUSKY_PACS_ENABLED: Replace default top plate with PACS top plate (Note: PACS will also disable USER RAIL)
+                    - Else, default top plate will be added.
+    -->
+    <!-- Default Top Plate -->
+    <xacro:if value="${top_plate_enable}">
+      <!-- Spawn default top plate -->
+      <link name="top_plate_link">
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <mesh filename="package://bot_description/meshes/top_plate.dae" />
+          </geometry>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="package://bot_description/meshes/top_plate.stl" />
+          </geometry>
+        </collision>
+      </link>
+      <!-- Attach default top plate -->
+      <joint name="top_plate_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="top_plate_link"/>
+        <origin xyz="-0.0412 0 0.245" rpy="0 0 0"/>
+      </joint>
+      <!-- Default top plate front link -->
+      <link name="top_plate_front_link"/>
+      <joint name="top_plate_front_joint" type="fixed">
+        <parent link="top_plate_link" />
+        <child link="top_plate_front_link"/>
+        <origin xyz="0.36367 0 0.00639" rpy="0 0 0"/>
+      </joint>
+      <!-- Default top plate rear link-->
+      <link name="top_plate_rear_link"/>
+      <joint name="top_plate_rear_joint" type="fixed">
+        <parent link="top_plate_link" />
+        <child link="top_plate_rear_link"/>
+        <origin xyz="-0.36633 0 0.00639" rpy="0 0 0"/>
+      </joint>
+    </xacro:if>
+
+  </xacro:macro>
+
+</robot>

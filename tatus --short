@@ -1,0 +1,900 @@
+ .gitignore                                         |    28 [32m+[m
+ src/bot_description/CMakeLists.txt                 |    38 [32m+[m
+ src/bot_description/config/controllers.yaml        |    79 [32m+[m
+ src/bot_description/launch/gazebo.launch.py        |   143 [32m+[m
+ src/bot_description/meshes/MPU6050.dae             |   106 [32m+[m
+ .../meshes/accessories/300_mm_sensor_arch.dae      |   199 [32m+[m
+ .../meshes/accessories/300_mm_sensor_arch.stl      |   Bin [31m0[m -> [32m2884[m bytes
+ .../meshes/accessories/510_mm_sensor_arch.dae      |   199 [32m+[m
+ .../meshes/accessories/510_mm_sensor_arch.stl      |   Bin [31m0[m -> [32m3084[m bytes
+ .../meshes/accessories/hokuyo_ust10.stl            |   Bin [31m0[m -> [32m105884[m bytes
+ .../meshes/accessories/lidar_mount.stl             |   Bin [31m0[m -> [32m45684[m bytes
+ .../meshes/accessories/lms1xx_mount.dae            |   125 [32m+[m
+ .../meshes/accessories/lms1xx_mount.stl            |   Bin [31m0[m -> [32m73084[m bytes
+ .../meshes/accessories/wibotic_bumper.stl          |   Bin [31m0[m -> [32m143084[m bytes
+ src/bot_description/meshes/base_link.dae           |    99 [32m+[m
+ src/bot_description/meshes/base_link.stl           |   Bin [31m0[m -> [32m408284[m bytes
+ .../meshes/bracket_extension_20.stl                |   Bin [31m0[m -> [32m4084[m bytes
+ .../meshes/bracket_extension_40.stl                |   Bin [31m0[m -> [32m4084[m bytes
+ .../meshes/bracket_extension_60.stl                |   Bin [31m0[m -> [32m4084[m bytes
+ .../meshes/bracket_extension_80.stl                |   Bin [31m0[m -> [32m4084[m bytes
+ src/bot_description/meshes/bracket_horizontal.stl  |   Bin [31m0[m -> [32m29884[m bytes
+ .../meshes/bracket_horizontal_large.stl            |   Bin [31m0[m -> [32m7884[m bytes
+ src/bot_description/meshes/bracket_vertical.stl    |   Bin [31m0[m -> [32m37484[m bytes
+ src/bot_description/meshes/bumper.dae              |   103 [32m+[m
+ src/bot_description/meshes/bumper_extension.dae    |    99 [32m+[m
+ src/bot_description/meshes/large_top_plate.dae     |   100 [32m+[m
+ .../meshes/large_top_plate_collision.stl           |   Bin [31m0[m -> [32m5084[m bytes
+ src/bot_description/meshes/pacs_full_riser.stl     |   Bin [31m0[m -> [32m1484[m bytes
+ src/bot_description/meshes/pacs_partial_riser.stl  |   Bin [31m0[m -> [32m2084[m bytes
+ src/bot_description/meshes/pacs_top_plate.stl      |   Bin [31m0[m -> [32m2484[m bytes
+ src/bot_description/meshes/rpi_camera.dae          |    59 [32m+[m
+ src/bot_description/meshes/rpi_camera_mount.dae    |    59 [32m+[m
+ src/bot_description/meshes/rplidar_base.dae        |    56 [32m+[m
+ src/bot_description/meshes/rplidar_stand.dae       |   106 [32m+[m
+ src/bot_description/meshes/rplidar_top.dae         |    59 [32m+[m
+ src/bot_description/meshes/top_chassis.dae         |    99 [32m+[m
+ src/bot_description/meshes/top_chassis.stl         |   Bin [31m0[m -> [32m908484[m bytes
+ src/bot_description/meshes/top_plate.dae           |    99 [32m+[m
+ src/bot_description/meshes/top_plate.stl           |   Bin [31m0[m -> [32m1484[m bytes
+ src/bot_description/meshes/user_rail.dae           |    99 [32m+[m
+ src/bot_description/meshes/user_rail.stl           |   Bin [31m0[m -> [32m444884[m bytes
+ src/bot_description/meshes/wheel.dae               |   110 [32m+[m
+ src/bot_description/meshes/wheel.stl               |   Bin [31m0[m -> [32m1362884[m bytes
+ src/bot_description/package.xml                    |    25 [32m+[m
+ src/bot_description/urdf/bot.urdf.xacro            |   292 [32m+[m
+ src/bot_description/urdf/bot_wheel.urdf.xacro      |    65 [32m+[m
+ src/bot_description/urdf/decorations.urdf.xacro    |   154 [32m+[m
+ .../world_models/100mmbin/meshes/100mm.dae         |    99 [32m+[m
+ .../world_models/100mmbin/meshes/100mm.stl         |   Bin [31m0[m -> [32m1484[m bytes
+ .../world_models/100mmbin/model.config             |    14 [32m+[m
+ .../world_models/100mmbin/model.sdf                |    50 [32m+[m
+ .../world_models/50mmbin/meshes/50mm.dae           |    99 [32m+[m
+ .../world_models/50mmbin/meshes/50mm.stl           |   Bin [31m0[m -> [32m1484[m bytes
+ .../world_models/50mmbin/model.config              |    14 [32m+[m
+ src/bot_description/world_models/50mmbin/model.sdf |    50 [32m+[m
+ .../world_models/6_Cube_StorageE/model.config      |    11 [32m+[m
+ .../world_models/6_Cube_StorageE/model.sdf         |   373 [32m+[m
+ src/bot_description/world_models/Box/model.config  |    12 [32m+[m
+ src/bot_description/world_models/Box/model.sdf     |    22 [32m+[m
+ .../world_models/Box_15x30/model.config            |    11 [32m+[m
+ .../world_models/Box_15x30/model.sdf               |    43 [32m+[m
+ .../world_models/Box_24x15M/model.config           |    11 [32m+[m
+ .../world_models/Box_24x15M/model.sdf              |    46 [32m+[m
+ .../world_models/Box_24x15W/model.config           |    11 [32m+[m
+ .../world_models/Box_24x15W/model.sdf              |    46 [32m+[m
+ .../world_models/Box_33x15/model.config            |    11 [32m+[m
+ .../world_models/Box_33x15/model.sdf               |    42 [32m+[m
+ .../world_models/Box_36x15W/model.config           |    11 [32m+[m
+ .../world_models/Box_36x15W/model.sdf              |    44 [32m+[m
+ .../materials/scripts/BoxesLargeOnPallet.material  |     4 [32m+[m
+ .../world_models/BoxesLargeOnPallet/model.config   |    12 [32m+[m
+ .../world_models/BoxesLargeOnPallet/model.sdf      |    22 [32m+[m
+ .../world_models/BoxesLargeOnPallet_2/model.config |    12 [32m+[m
+ .../world_models/BoxesLargeOnPallet_2/model.sdf    |    22 [32m+[m
+ .../world_models/BoxesLargeOnPallet_3/model.config |    12 [32m+[m
+ .../world_models/BoxesLargeOnPallet_3/model.sdf    |    22 [32m+[m
+ .../Floor/materials/scripts/Floor.material         |    15 [32m+[m
+ .../world_models/Floor/materials/textures/cl1.jpg  |   Bin [31m0[m -> [32m64693[m bytes
+ .../world_models/Floor/materials/textures/cl2.jpg  |   Bin [31m0[m -> [32m82051[m bytes
+ .../world_models/Floor/materials/textures/cl3.jpg  |   Bin [31m0[m -> [32m58291[m bytes
+ .../world_models/Floor/materials/textures/cl4.jpg  |   Bin [31m0[m -> [32m17202[m bytes
+ .../world_models/Floor/materials/textures/cl5.jpg  |   Bin [31m0[m -> [32m30690[m bytes
+ .../world_models/Floor/materials/textures/cl6.jpg  |   Bin [31m0[m -> [32m4335[m bytes
+ .../world_models/Floor/materials/textures/cp1.jpg  |   Bin [31m0[m -> [32m454603[m bytes
+ .../world_models/Floor/materials/textures/cp2.jpg  |   Bin [31m0[m -> [32m2451937[m bytes
+ .../world_models/Floor/materials/textures/cp3.jpg  |   Bin [31m0[m -> [32m165661[m bytes
+ .../world_models/Floor/materials/textures/cp4.jpg  |   Bin [31m0[m -> [32m143894[m bytes
+ .../world_models/Floor/materials/textures/cp5.png  |   Bin [31m0[m -> [32m2394815[m bytes
+ .../world_models/Floor/materials/textures/cp6.jpg  |   Bin [31m0[m -> [32m395372[m bytes
+ .../world_models/Floor/materials/textures/cp7.jpg  |   Bin [31m0[m -> [32m2192[m bytes
+ .../world_models/Floor/materials/textures/cp8.jpg  |   Bin [31m0[m -> [32m160794[m bytes
+ .../world_models/Floor/materials/textures/hd1.jpg  |   Bin [31m0[m -> [32m34919[m bytes
+ .../world_models/Floor/materials/textures/hd2.gif  |   Bin [31m0[m -> [32m75919[m bytes
+ .../world_models/Floor/materials/textures/hd3.jpg  |   Bin [31m0[m -> [32m7758[m bytes
+ .../world_models/Floor/materials/textures/hd4.jpg  |   Bin [31m0[m -> [32m19998[m bytes
+ .../world_models/Floor/materials/textures/hd5.jpg  |   Bin [31m0[m -> [32m4890[m bytes
+ .../world_models/Floor/materials/textures/hd6.png  |   Bin [31m0[m -> [32m341579[m bytes
+ .../world_models/Floor/materials/textures/hd7.jpg  |   Bin [31m0[m -> [32m96233[m bytes
+ .../world_models/Floor/materials/textures/hd8.jpg  |   Bin [31m0[m -> [32m3354[m bytes
+ .../world_models/Floor/model.config                |    13 [32m+[m
+ src/bot_description/world_models/Floor/model.sdf   |    44 [32m+[m
+ .../Floor_room/materials/scripts/Floor.material    |    15 [32m+[m
+ .../materials/scripts/Floor_room.material          |    15 [32m+[m
+ .../Floor_room/materials/textures/carpet_1.jpg     |   Bin [31m0[m -> [32m52341[m bytes
+ .../Floor_room/materials/textures/carpet_2.jpg     |   Bin [31m0[m -> [32m81464[m bytes
+ .../Floor_room/materials/textures/carpet_3.jpg     |   Bin [31m0[m -> [32m175020[m bytes
+ .../Floor_room/materials/textures/carpet_4.jpg     |   Bin [31m0[m -> [32m220648[m bytes
+ .../Floor_room/materials/textures/cl1.jpg          |   Bin [31m0[m -> [32m64693[m bytes
+ .../Floor_room/materials/textures/cl2.jpg          |   Bin [31m0[m -> [32m82051[m bytes
+ .../Floor_room/materials/textures/cl3.jpg          |   Bin [31m0[m -> [32m58291[m bytes
+ .../Floor_room/materials/textures/cl4.jpg          |   Bin [31m0[m -> [32m17202[m bytes
+ .../Floor_room/materials/textures/cl5.jpg          |   Bin [31m0[m -> [32m30690[m bytes
+ .../Floor_room/materials/textures/cl6.jpg          |   Bin [31m0[m -> [32m4335[m bytes
+ .../Floor_room/materials/textures/cp1.jpg          |   Bin [31m0[m -> [32m454603[m bytes
+ .../Floor_room/materials/textures/cp2.jpg          |   Bin [31m0[m -> [32m2451937[m bytes
+ .../Floor_room/materials/textures/cp3.jpg          |   Bin [31m0[m -> [32m165661[m bytes
+ .../Floor_room/materials/textures/cp4.jpg          |   Bin [31m0[m -> [32m143894[m bytes
+ .../Floor_room/materials/textures/cp5.png          |   Bin [31m0[m -> [32m2394815[m bytes
+ .../Floor_room/materials/textures/cp6.jpg          |   Bin [31m0[m -> [32m395372[m bytes
+ .../Floor_room/materials/textures/cp7.jpg          |   Bin [31m0[m -> [32m2192[m bytes
+ .../Floor_room/materials/textures/cp8.jpg          |   Bin [31m0[m -> [32m160794[m bytes
+ .../Floor_room/materials/textures/hd1.jpg          |   Bin [31m0[m -> [32m34919[m bytes
+ .../Floor_room/materials/textures/hd2.gif          |   Bin [31m0[m -> [32m75919[m bytes
+ .../Floor_room/materials/textures/hd3.jpg          |   Bin [31m0[m -> [32m7758[m bytes
+ .../Floor_room/materials/textures/hd4.jpg          |   Bin [31m0[m -> [32m19998[m bytes
+ .../Floor_room/materials/textures/hd5.jpg          |   Bin [31m0[m -> [32m4890[m bytes
+ .../Floor_room/materials/textures/hd6.png          |   Bin [31m0[m -> [32m341579[m bytes
+ .../Floor_room/materials/textures/hd7.jpg          |   Bin [31m0[m -> [32m96233[m bytes
+ .../Floor_room/materials/textures/hd8.jpg          |   Bin [31m0[m -> [32m3354[m bytes
+ .../world_models/Floor_room/model.config           |    13 [32m+[m
+ .../world_models/Floor_room/model.sdf              |    30 [32m+[m
+ .../world_models/Fridge_Cabinet_33x15/model.config |    11 [32m+[m
+ .../world_models/Fridge_Cabinet_33x15/model.sdf    |   259 [32m+[m
+ src/bot_description/world_models/Tree_1/Tree_1.dae |  3641 [32m+[m
+ src/bot_description/world_models/Tree_1/Tree_1.sdf |    25 [32m+[m
+ .../Tree_1/Tree_1_texture/Tree_texture_1.jpg       |   Bin [31m0[m -> [32m13416[m bytes
+ .../Tree_1/Tree_1_texture/Tree_texture_2.jpg       |   Bin [31m0[m -> [32m30027[m bytes
+ .../world_models/Tree_1/model.config               |    15 [32m+[m
+ src/bot_description/world_models/Tree_2/Tree_2.dae |  3641 [32m+[m
+ src/bot_description/world_models/Tree_2/Tree_2.sdf |    25 [32m+[m
+ .../Tree_2/Tree_2_texture/Tree_texture_1.jpg       |   Bin [31m0[m -> [32m13416[m bytes
+ .../Tree_2/Tree_2_texture/Tree_texture_2.jpg       |   Bin [31m0[m -> [32m30027[m bytes
+ .../world_models/Tree_2/model.config               |    15 [32m+[m
+ .../world_models/Wall_Cabinet_15x30/model.config   |    11 [32m+[m
+ .../world_models/Wall_Cabinet_15x30/model.sdf      |   391 [32m+[m
+ .../world_models/Wall_Cabinet_24x15M/model.config  |    11 [32m+[m
+ .../world_models/Wall_Cabinet_24x15M/model.sdf     |   259 [32m+[m
+ .../world_models/Wall_Cabinet_24x15W/model.config  |    11 [32m+[m
+ .../world_models/Wall_Cabinet_24x15W/model.sdf     |   259 [32m+[m
+ .../world_models/Wall_Cabinet_36x15W/model.config  |    11 [32m+[m
+ .../world_models/Wall_Cabinet_36x15W/model.sdf     |   260 [32m+[m
+ .../Wall_Cabinet_Coin_24x30W/model.config          |    12 [32m+[m
+ .../Wall_Cabinet_Coin_24x30W/model.sdf             |   550 [32m+[m
+ .../materials/textures/Metal_Aluminum_Anodized.jpg |   Bin [31m0[m -> [32m2508[m bytes
+ .../materials/textures/__Asphalt_New_1.jpg         |   Bin [31m0[m -> [32m7530[m bytes
+ .../world_models/Wire_Shelf/meshes/leg.dae         | 10369 [32m+++[m
+ .../world_models/Wire_Shelf/meshes/level.dae       |  7845 [32m++[m
+ .../world_models/Wire_Shelf/meshes/model.dae       | 77067 [32m+++++++++++++++++++[m
+ .../world_models/Wire_Shelf/meshes/shelf.dae       | 50934 [32m++++++++++++[m
+ .../world_models/Wire_Shelf/meshes/shelf_1v.dae    | 21685 [32m++++++[m
+ .../world_models/Wire_Shelf/meshes/shelf_2v.dae    | 12221 [32m+++[m
+ .../world_models/Wire_Shelf/model.config           |    16 [32m+[m
+ .../world_models/Wire_Shelf/model.sdf              |   333 [32m+[m
+ .../materials/scripts/rubberFloor.material         |    14 [32m+[m
+ .../Workshop/materials/textures/rubber.png         |   Bin [31m0[m -> [32m538621[m bytes
+ .../world_models/Workshop/model.config             |    12 [32m+[m
+ .../world_models/Workshop/model.sdf                |   183 [32m+[m
+ .../materials/scripts/silver_zed.material          |    15 [32m+[m
+ .../Zed_dummy/materials/textures/silver_zed.jpg    |   Bin [31m0[m -> [32m420544[m bytes
+ .../world_models/Zed_dummy/meshes/camera.dae       |   384 [32m+[m
+ .../world_models/Zed_dummy/meshes/frame.dae        |   125 [32m+[m
+ .../world_models/Zed_dummy/meshes/lenses.dae       |   197 [32m+[m
+ .../world_models/Zed_dummy/meshes/panel.dae        |   125 [32m+[m
+ .../world_models/Zed_dummy/meshes/panel1.dae       |   197 [32m+[m
+ .../world_models/Zed_dummy/model.config            |    19 [32m+[m
+ .../world_models/Zed_dummy/model.sdf               |   237 [32m+[m
+ .../world_models/airport_mat/airport_mat.dae       |   129 [32m+[m
+ .../world_models/airport_mat/airport_mat.sdf       |    19 [32m+[m
+ .../airport_mat/airport_mat/mat_airport.png        |   Bin [31m0[m -> [32m799751[m bytes
+ .../world_models/airport_mat/model.config          |    15 [32m+[m
+ .../aluminum_bar_1/aluminum/aluminum_1.jpg         |   Bin [31m0[m -> [32m22347[m bytes
+ .../world_models/aluminum_bar_1/aluminum_bar_1.dae |   125 [32m+[m
+ .../world_models/aluminum_bar_1/aluminum_bar_1.sdf |    25 [32m+[m
+ .../world_models/aluminum_bar_1/model.config       |    16 [32m+[m
+ .../materials/scripts/asphalt.material             |    20 [32m+[m
+ .../asphalt_plane/materials/textures/tarmac.png    |   Bin [31m0[m -> [32m2739482[m bytes
+ .../world_models/asphalt_plane/model-1_4.sdf       |    30 [32m+[m
+ .../world_models/asphalt_plane/model.config        |    18 [32m+[m
+ .../world_models/asphalt_plane/model.sdf           |    30 [32m+[m
+ .../big_box/materials/textures/Kraft_Tile.jpg      |   Bin [31m0[m -> [32m10575[m bytes
+ .../big_box/materials/textures/barcode.png         |   Bin [31m0[m -> [32m19396[m bytes
+ .../big_box/materials/textures/front.pdn           |   Bin [31m0[m -> [32m5676[m bytes
+ .../big_box/materials/textures/front.png           |   Bin [31m0[m -> [32m1285[m bytes
+ .../big_box/materials/textures/side1.pdn           |   Bin [31m0[m -> [32m37903[m bytes
+ .../big_box/materials/textures/side1.png           |   Bin [31m0[m -> [32m21862[m bytes
+ .../big_box/materials/textures/side2.pdn           |   Bin [31m0[m -> [32m7765[m bytes
+ .../big_box/materials/textures/side2.png           |   Bin [31m0[m -> [32m1450[m bytes
+ .../world_models/big_box/meshes/big_box.dae        |   478 [32m+[m
+ .../world_models/big_box/model.config              |    17 [32m+[m
+ src/bot_description/world_models/big_box/model.sdf |    43 [32m+[m
+ .../big_box2/materials/textures/Kraft_Tile.jpg     |   Bin [31m0[m -> [32m833[m bytes
+ .../big_box2/materials/textures/barcode.png        |   Bin [31m0[m -> [32m19396[m bytes
+ .../big_box2/materials/textures/front.pdn          |   Bin [31m0[m -> [32m5670[m bytes
+ .../big_box2/materials/textures/front.png          |   Bin [31m0[m -> [32m1285[m bytes
+ .../big_box2/materials/textures/side1.pdn          |   Bin [31m0[m -> [32m62879[m bytes
+ .../big_box2/materials/textures/side1.png          |   Bin [31m0[m -> [32m21485[m bytes
+ .../big_box2/materials/textures/side2.pdn          |   Bin [31m0[m -> [32m7770[m bytes
+ .../big_box2/materials/textures/side2.png          |   Bin [31m0[m -> [32m1450[m bytes
+ .../world_models/big_box2/meshes/big_box.dae       |   478 [32m+[m
+ .../world_models/big_box2/model.config             |    17 [32m+[m
+ .../world_models/big_box2/model.sdf                |    43 [32m+[m
+ .../big_box3/materials/textures/Kraft_Tile.jpg     |   Bin [31m0[m -> [32m10575[m bytes
+ .../big_box3/materials/textures/barcode.png        |   Bin [31m0[m -> [32m19396[m bytes
+ .../big_box3/materials/textures/front.pdn          |   Bin [31m0[m -> [32m5676[m bytes
+ .../big_box3/materials/textures/front.png          |   Bin [31m0[m -> [32m1285[m bytes
+ .../big_box3/materials/textures/side1.pdn          |   Bin [31m0[m -> [32m37903[m bytes
+ .../big_box3/materials/textures/side1.png          |   Bin [31m0[m -> [32m21862[m bytes
+ .../big_box3/materials/textures/side2.pdn          |   Bin [31m0[m -> [32m7765[m bytes
+ .../big_box3/materials/textures/side2.png          |   Bin [31m0[m -> [32m1450[m bytes
+ .../world_models/big_box3/meshes/big_box.dae       |   478 [32m+[m
+ .../world_models/big_box3/model.config             |    17 [32m+[m
+ .../world_models/big_box3/model.sdf                |    43 [32m+[m
+ .../big_box4/materials/textures/Kraft_Tile.jpg     |   Bin [31m0[m -> [32m833[m bytes
+ .../big_box4/materials/textures/barcode.png        |   Bin [31m0[m -> [32m19396[m bytes
+ .../big_box4/materials/textures/front.pdn          |   Bin [31m0[m -> [32m5670[m bytes
+ .../big_box4/materials/textures/front.png          |   Bin [31m0[m -> [32m1285[m bytes
+ .../big_box4/materials/textures/side1.pdn          |   Bin [31m0[m -> [32m62879[m bytes
+ .../big_box4/materials/textures/side1.png          |   Bin [31m0[m -> [32m21485[m bytes
+ .../big_box4/materials/textures/side2.pdn          |   Bin [31m0[m -> [32m7770[m bytes
+ .../big_box4/materials/textures/side2.png          |   Bin [31m0[m -> [32m1450[m bytes
+ .../world_models/big_box4/meshes/big_box.dae       |   478 [32m+[m
+ .../world_models/big_box4/model.config             |    17 [32m+[m
+ .../world_models/big_box4/model.sdf                |    43 [32m+[m
+ .../materials/scripts/biscuit_pat.material         |    16 [32m+[m
+ .../biscuit_box/materials/textures/biscuit.jpg     |   Bin [31m0[m -> [32m169179[m bytes
+ .../biscuit_box/materials/textures/biscuit_red.jpg |   Bin [31m0[m -> [32m55570[m bytes
+ .../world_models/biscuit_box/model.config          |    11 [32m+[m
+ .../world_models/biscuit_box/model.sdf             |    66 [32m+[m
+ .../blue_bin_cuboid/meshes/blue_bin.stl            |   Bin [31m0[m -> [32m57484[m bytes
+ .../world_models/blue_bin_cuboid/model.config      |    11 [32m+[m
+ .../world_models/blue_bin_cuboid/model.sdf         |    41 [32m+[m
+ .../book_1/materials/scripts/book_1.material       |    15 [32m+[m
+ .../book_1/materials/textures/cover1.jpg           |   Bin [31m0[m -> [32m37494[m bytes
+ .../world_models/book_1/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_1/model.sdf  |    81 [32m+[m
+ .../book_10/materials/scripts/book_10.material     |    15 [32m+[m
+ .../book_10/materials/textures/cover10.jpg         |   Bin [31m0[m -> [32m43989[m bytes
+ .../world_models/book_10/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_10/model.sdf |    81 [32m+[m
+ .../book_11/materials/scripts/book_11.material     |    15 [32m+[m
+ .../book_11/materials/textures/cover11.jpg         |   Bin [31m0[m -> [32m41659[m bytes
+ .../world_models/book_11/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_11/model.sdf |    81 [32m+[m
+ .../book_12/materials/scripts/book_12.material     |    15 [32m+[m
+ .../book_12/materials/textures/cover12.jpg         |   Bin [31m0[m -> [32m28907[m bytes
+ .../world_models/book_12/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_12/model.sdf |    81 [32m+[m
+ .../book_13/materials/scripts/book_13.material     |    15 [32m+[m
+ .../book_13/materials/textures/cover13.jpg         |   Bin [31m0[m -> [32m128774[m bytes
+ .../world_models/book_13/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_13/model.sdf |    81 [32m+[m
+ .../book_14/materials/scripts/book_14.material     |    15 [32m+[m
+ .../book_14/materials/textures/cover14.jpg         |   Bin [31m0[m -> [32m9153289[m bytes
+ .../world_models/book_14/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_14/model.sdf |    81 [32m+[m
+ .../book_15/materials/scripts/book_15.material     |    15 [32m+[m
+ .../book_15/materials/textures/cover15.jpg         |   Bin [31m0[m -> [32m71059[m bytes
+ .../world_models/book_15/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_15/model.sdf |    81 [32m+[m
+ .../book_16/materials/scripts/book_16.material     |    15 [32m+[m
+ .../book_16/materials/textures/cover16.jpg         |   Bin [31m0[m -> [32m38789[m bytes
+ .../world_models/book_16/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_16/model.sdf |    81 [32m+[m
+ .../book_17/materials/scripts/book_17.material     |    15 [32m+[m
+ .../book_17/materials/textures/cover17.jpg         |   Bin [31m0[m -> [32m13203[m bytes
+ .../world_models/book_17/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_17/model.sdf |    81 [32m+[m
+ .../book_18/materials/scripts/book_18.material     |    15 [32m+[m
+ .../book_18/materials/textures/cover18.jpg         |   Bin [31m0[m -> [32m34265[m bytes
+ .../world_models/book_18/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_18/model.sdf |    81 [32m+[m
+ .../book_19/materials/scripts/book_19.material     |    15 [32m+[m
+ .../book_19/materials/textures/cover19.jpg         |   Bin [31m0[m -> [32m19660[m bytes
+ .../world_models/book_19/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_19/model.sdf |    81 [32m+[m
+ .../book_2/materials/scripts/book_2.material       |    15 [32m+[m
+ .../book_2/materials/textures/cover2.jpg           |   Bin [31m0[m -> [32m699620[m bytes
+ .../world_models/book_2/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_2/model.sdf  |    81 [32m+[m
+ .../book_20/materials/scripts/book_20.material     |    15 [32m+[m
+ .../book_20/materials/textures/cover20.jpg         |   Bin [31m0[m -> [32m96535[m bytes
+ .../world_models/book_20/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_20/model.sdf |    81 [32m+[m
+ .../book_21/materials/scripts/book_21.material     |    15 [32m+[m
+ .../book_21/materials/textures/cover21.jpg         |   Bin [31m0[m -> [32m592508[m bytes
+ .../world_models/book_21/model.config              |    11 [32m+[m
+ src/bot_description/world_models/book_21/model.sdf |    81 [32m+[m
+ .../book_3/materials/scripts/book_3.material       |    15 [32m+[m
+ .../book_3/materials/textures/cover3.jpg           |   Bin [31m0[m -> [32m112352[m bytes
+ .../world_models/book_3/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_3/model.sdf  |    81 [32m+[m
+ .../book_4/materials/scripts/book_4.material       |    15 [32m+[m
+ .../book_4/materials/textures/cover4.jpg           |   Bin [31m0[m -> [32m138202[m bytes
+ .../world_models/book_4/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_4/model.sdf  |    72 [32m+[m
+ .../book_5/materials/scripts/book_5.material       |    15 [32m+[m
+ .../book_5/materials/textures/cover5.jpg           |   Bin [31m0[m -> [32m34089[m bytes
+ .../world_models/book_5/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_5/model.sdf  |    81 [32m+[m
+ .../book_6/materials/scripts/book_6.material       |    15 [32m+[m
+ .../book_6/materials/textures/cover6.jpg           |   Bin [31m0[m -> [32m106792[m bytes
+ .../world_models/book_6/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_6/model.sdf  |    81 [32m+[m
+ .../book_7/materials/scripts/book_7.material       |    15 [32m+[m
+ .../book_7/materials/textures/cover7.jpg           |   Bin [31m0[m -> [32m24127[m bytes
+ .../world_models/book_7/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_7/model.sdf  |    81 [32m+[m
+ .../book_8/materials/scripts/book_8.material       |    15 [32m+[m
+ .../book_8/materials/textures/cover8.jpg           |   Bin [31m0[m -> [32m43902[m bytes
+ .../world_models/book_8/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_8/model.sdf  |    81 [32m+[m
+ .../book_9/materials/scripts/book_9.material       |    15 [32m+[m
+ .../book_9/materials/textures/cover9.jpg           |   Bin [31m0[m -> [32m13758[m bytes
+ .../world_models/book_9/model.config               |    11 [32m+[m
+ src/bot_description/world_models/book_9/model.sdf  |    81 [32m+[m
+ .../world_models/book_blue/meshes/book_cover.dae   |   283 [32m+[m
+ .../world_models/book_blue/meshes/book_full.dae    |   352 [32m+[m
+ .../world_models/book_blue/meshes/book_page.dae    |   270 [32m+[m
+ .../world_models/book_blue/model.config            |    11 [32m+[m
+ .../world_models/book_blue/model.sdf               |    77 [32m+[m
+ .../world_models/book_green/meshes/book2_cover.dae |   619 [32m+[m
+ .../world_models/book_green/meshes/book2_full.dae  |   785 [32m+[m
+ .../world_models/book_green/meshes/book2_page.dae  |   363 [32m+[m
+ .../world_models/book_green/model.config           |    11 [32m+[m
+ .../world_models/book_green/model.sdf              |    77 [32m+[m
+ .../world_models/book_grey/meshes/book1_cover.dae  |   228 [32m+[m
+ .../world_models/book_grey/meshes/book1_page.dae   |   282 [32m+[m
+ .../world_models/book_grey/meshes/book1_red.dae    |   396 [32m+[m
+ .../world_models/book_grey/model.config            |    11 [32m+[m
+ .../world_models/book_grey/model.sdf               |    77 [32m+[m
+ .../book_open/materials/scripts/book_page.material |    15 [32m+[m
+ .../book_open/materials/textures/page.jpg          |   Bin [31m0[m -> [32m820646[m bytes
+ .../world_models/book_open/meshes/cover.dae        |   491 [32m+[m
+ .../world_models/book_open/meshes/open_book.dae    |   678 [32m+[m
+ .../world_models/book_open/meshes/open_page.dae    |   293 [32m+[m
+ .../world_models/book_open/meshes/pages.dae        |   370 [32m+[m
+ .../world_models/book_open/model.config            |    11 [32m+[m
+ .../world_models/book_open/model.sdf               |   113 [32m+[m
+ .../book_orange/materials/scripts/book_o.material  |    15 [32m+[m
+ .../book_orange/materials/textures/cover15.jpg     |   Bin [31m0[m -> [32m416508[m bytes
+ .../world_models/book_orange/meshes/book_cover.dae |   283 [32m+[m
+ .../world_models/book_orange/meshes/book_full.dae  |   352 [32m+[m
+ .../world_models/book_orange/meshes/book_page.dae  |   270 [32m+[m
+ .../world_models/book_orange/model.config          |    11 [32m+[m
+ .../world_models/book_orange/model.sdf             |    84 [32m+[m
+ .../world_models/book_pink/meshes/book2_cover.dae  |   619 [32m+[m
+ .../world_models/book_pink/meshes/book2_full.dae   |   785 [32m+[m
+ .../world_models/book_pink/meshes/book2_page.dae   |   363 [32m+[m
+ .../world_models/book_pink/model.config            |    11 [32m+[m
+ .../world_models/book_pink/model.sdf               |    77 [32m+[m
+ .../book_purple/materials/scripts/book_p.material  |    15 [32m+[m
+ .../book_purple/materials/textures/cover_p.jpg     |   Bin [31m0[m -> [32m176339[m bytes
+ .../world_models/book_purple/meshes/book_cover.dae |   283 [32m+[m
+ .../world_models/book_purple/meshes/book_full.dae  |   352 [32m+[m
+ .../world_models/book_purple/meshes/book_page.dae  |   270 [32m+[m
+ .../world_models/book_purple/model.config          |    11 [32m+[m
+ .../world_models/book_purple/model.sdf             |    84 [32m+[m
+ .../world_models/book_red/meshes/book1_cover.dae   |   228 [32m+[m
+ .../world_models/book_red/meshes/book1_page.dae    |   282 [32m+[m
+ .../world_models/book_red/meshes/book1_red.dae     |   396 [32m+[m
+ .../world_models/book_red/model.config             |    11 [32m+[m
+ .../world_models/book_red/model.sdf                |    77 [32m+[m
+ .../world_models/book_sky/meshes/book1_cover.dae   |   228 [32m+[m
+ .../world_models/book_sky/meshes/book1_page.dae    |   282 [32m+[m
+ .../world_models/book_sky/meshes/book1_red.dae     |   396 [32m+[m
+ .../world_models/book_sky/model.config             |    11 [32m+[m
+ .../world_models/book_sky/model.sdf                |    77 [32m+[m
+ .../book_small_1/meshes/book1_cover.dae            |   228 [32m+[m
+ .../book_small_1/meshes/book1_page.dae             |   282 [32m+[m
+ .../world_models/book_small_1/meshes/book1_red.dae |   396 [32m+[m
+ .../world_models/book_small_1/model.config         |    11 [32m+[m
+ .../world_models/book_small_1/model.sdf            |    76 [32m+[m
+ .../book_small_2/meshes/book1_cover.dae            |   228 [32m+[m
+ .../book_small_2/meshes/book1_page.dae             |   282 [32m+[m
+ .../world_models/book_small_2/meshes/book1_red.dae |   396 [32m+[m
+ .../world_models/book_small_2/model.config         |    11 [32m+[m
+ .../world_models/book_small_2/model.sdf            |    76 [32m+[m
+ .../book_small_3/meshes/book1_cover.dae            |   228 [32m+[m
+ .../book_small_3/meshes/book1_page.dae             |   282 [32m+[m
+ .../world_models/book_small_3/meshes/book1_red.dae |   396 [32m+[m
+ .../world_models/book_small_3/model.config         |    11 [32m+[m
+ .../world_models/book_small_3/model.sdf            |    76 [32m+[m
+ .../book_yellow/meshes/book2_cover.dae             |   619 [32m+[m
+ .../world_models/book_yellow/meshes/book2_full.dae |   785 [32m+[m
+ .../world_models/book_yellow/meshes/book2_page.dae |   363 [32m+[m
+ .../world_models/book_yellow/model.config          |    11 [32m+[m
+ .../world_models/book_yellow/model.sdf             |    77 [32m+[m
+ .../materials/scripts/bookshelf.material           |    15 [32m+[m
+ .../materials/textures/wood_dark_4.jpg             |   Bin [31m0[m -> [32m55273[m bytes
+ .../world_models/bookshelf_large/meshes/frame.dae  |   541 [32m+[m
+ .../world_models/bookshelf_large/meshes/glass.dae  |   569 [32m+[m
+ .../world_models/bookshelf_large/meshes/model.dae  |   984 [32m+[m
+ .../world_models/bookshelf_large/model.config      |    11 [32m+[m
+ .../world_models/bookshelf_large/model.sdf         |    71 [32m+[m
+ .../bottle_beer/meshes/beer_bottle.dae             |   457 [32m+[m
+ .../world_models/bottle_beer/meshes/bottle.dae     |   437 [32m+[m
+ .../world_models/bottle_beer/meshes/cap.dae        |   281 [32m+[m
+ .../world_models/bottle_beer/model.config          |    11 [32m+[m
+ .../world_models/bottle_beer/model.sdf             |    73 [32m+[m
+ .../bottle_beer_broken/meshes/beer_debris.dae      |   452 [32m+[m
+ .../meshes/bottle_beer_broken.dae                  |   405 [32m+[m
+ .../world_models/bottle_beer_broken/meshes/cap.dae |   281 [32m+[m
+ .../world_models/bottle_beer_broken/model.config   |    11 [32m+[m
+ .../world_models/bottle_beer_broken/model.sdf      |   170 [32m+[m
+ .../world_models/bottle_red_wine/meshes/bottle.dae |   369 [32m+[m
+ .../world_models/bottle_red_wine/meshes/cap.dae    |   212 [32m+[m
+ .../bottle_red_wine/meshes/red_wine.dae            |   385 [32m+[m
+ .../world_models/bottle_red_wine/model.config      |    11 [32m+[m
+ .../world_models/bottle_red_wine/model.sdf         |    93 [32m+[m
+ .../bottle_white_wine/meshes/bottle.dae            |   349 [32m+[m
+ .../world_models/bottle_white_wine/meshes/cap.dae  |   253 [32m+[m
+ .../bottle_white_wine/meshes/white_wine.dae        |   339 [32m+[m
+ .../world_models/bottle_white_wine/model.config    |    11 [32m+[m
+ .../world_models/bottle_white_wine/model.sdf       |    79 [32m+[m
+ .../meshes/bottle_wine_broken.dae                  |   353 [32m+[m
+ .../bottle_wine_broken/meshes/wine_debris.dae      |   385 [32m+[m
+ .../world_models/bottle_wine_broken/model.config   |    11 [32m+[m
+ .../world_models/bottle_wine_broken/model.sdf      |   116 [32m+[m
+ .../brick_bar_1/brick_antique/brick_antique_1.jpg  |   Bin [31m0[m -> [32m19265[m bytes
+ .../world_models/brick_bar_1/brick_bar_1.dae       |   125 [32m+[m
+ .../world_models/brick_bar_1/brick_bar_1.sdf       |    25 [32m+[m
+ .../world_models/brick_bar_1/model.config          |    15 [32m+[m
+ .../brick_cube_1/brick_antique/brick_antique_1.jpg |   Bin [31m0[m -> [32m19265[m bytes
+ .../world_models/brick_cube_1/brick_cube_1.dae     |   125 [32m+[m
+ .../world_models/brick_cube_1/brick_cube_1.sdf     |    25 [32m+[m
+ .../world_models/brick_cube_1/model.config         |    16 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../world_models/brick_sphere_1/brick_sphere_1.dae |   146 [32m+[m
+ .../world_models/brick_sphere_1/brick_sphere_1.sdf |    25 [32m+[m
+ .../world_models/brick_sphere_1/model.config       |    15 [32m+[m
+ .../brick_wall_1/brick_antique/brick_antique_1.jpg |   Bin [31m0[m -> [32m19265[m bytes
+ .../world_models/brick_wall_1/brick_wall_1.dae     |   125 [32m+[m
+ .../world_models/brick_wall_1/brick_wall_1.sdf     |    25 [32m+[m
+ .../world_models/brick_wall_1/model.config         |    16 [32m+[m
+ .../brick_wall_2/brick_antique/brick_antique_1.jpg |   Bin [31m0[m -> [32m19265[m bytes
+ .../world_models/brick_wall_2/brick_wall_2.dae     |   125 [32m+[m
+ .../world_models/brick_wall_2/brick_wall_2.sdf     |    25 [32m+[m
+ .../world_models/brick_wall_2/model.config         |    16 [32m+[m
+ .../brick_wall_3/brick_antique/brick_antique_1.jpg |   Bin [31m0[m -> [32m19265[m bytes
+ .../world_models/brick_wall_3/brick_wall_3.dae     |   125 [32m+[m
+ .../world_models/brick_wall_3/brick_wall_3.sdf     |    25 [32m+[m
+ .../world_models/brick_wall_3/model.config         |    16 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../brick_wall_hole_1/brick_wall_hole_1.dae        |   176 [32m+[m
+ .../brick_wall_hole_1/brick_wall_hole_1.sdf        |    25 [32m+[m
+ .../world_models/brick_wall_hole_1/model.config    |    15 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../brick_wall_hole_2/brick_wall_hole_2.dae        |   176 [32m+[m
+ .../brick_wall_hole_2/brick_wall_hole_2.sdf        |    25 [32m+[m
+ .../world_models/brick_wall_hole_2/model.config    |    15 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../brick_wall_hole_3/brick_wall_hole_3.dae        |  2420 [32m+[m
+ .../brick_wall_hole_3/brick_wall_hole_3.sdf        |    25 [32m+[m
+ .../world_models/brick_wall_hole_3/model.config    |    15 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../brick_wall_hole_4/brick_wall_hole_4.dae        |   176 [32m+[m
+ .../brick_wall_hole_4/brick_wall_hole_4.sdf        |    25 [32m+[m
+ .../world_models/brick_wall_hole_4/model.config    |    16 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../brick_wall_hole_5/brick_wall_hole_5.dae        |   176 [32m+[m
+ .../brick_wall_hole_5/brick_wall_hole_5.sdf        |    25 [32m+[m
+ .../world_models/brick_wall_hole_5/model.config    |    16 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../brick_wall_hole_6/brick_wall_hole_6.dae        |   176 [32m+[m
+ .../brick_wall_hole_6/brick_wall_hole_6.sdf        |    25 [32m+[m
+ .../world_models/brick_wall_hole_6/model.config    |    16 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../brick_wall_hole_7/brick_wall_hole_7.dae        |   176 [32m+[m
+ .../brick_wall_hole_7/brick_wall_hole_7.sdf        |    25 [32m+[m
+ .../world_models/brick_wall_hole_7/model.config    |    16 [32m+[m
+ .../brick_antique/brick_antique_1.jpg              |   Bin [31m0[m -> [32m19265[m bytes
+ .../brick_wall_lshaped_1/brick_wall_lshaped_1.dae  |   152 [32m+[m
+ .../brick_wall_lshaped_1/brick_wall_lshaped_1.sdf  |    25 [32m+[m
+ .../world_models/brick_wall_lshaped_1/model.config |    15 [32m+[m
+ .../bumblebee2_dummy/meshes/bumblebee2.dae         |   215 [32m+[m
+ .../world_models/bumblebee2_dummy/model.config     |    20 [32m+[m
+ .../world_models/bumblebee2_dummy/model.sdf        |    35 [32m+[m
+ .../meshes/Romanoff_Small_Utility_Caddy_cof.stl    |   Bin [31m0[m -> [32m68184[m bytes
+ .../Romanoff_Small_Utility_Caddy_cof_blue.dae      |    99 [32m+[m
+ .../world_models/caddy_blue/model.config           |    13 [32m+[m
+ .../world_models/caddy_blue/model.sdf              |    51 [32m+[m
+ .../meshes/Romanoff_Small_Utility_Caddy_cof.stl    |   Bin [31m0[m -> [32m68184[m bytes
+ .../Romanoff_Small_Utility_Caddy_cof_green.dae     |    99 [32m+[m
+ .../world_models/caddy_green/model.config          |    13 [32m+[m
+ .../world_models/caddy_green/model.sdf             |    51 [32m+[m
+ .../meshes/Romanoff_Small_Utility_Caddy_cof.stl    |   Bin [31m0[m -> [32m68184[m bytes
+ .../Romanoff_Small_Utility_Caddy_cof_grey.dae      |    99 [32m+[m
+ .../world_models/caddy_grey/model.config           |    13 [32m+[m
+ .../world_models/caddy_grey/model.sdf              |    51 [32m+[m
+ .../meshes/Romanoff_Small_Utility_Caddy_cof.stl    |   Bin [31m0[m -> [32m68184[m bytes
+ .../Romanoff_Small_Utility_Caddy_cof_orange.dae    |    99 [32m+[m
+ .../world_models/caddy_orange/model.config         |    13 [32m+[m
+ .../world_models/caddy_orange/model.sdf            |    51 [32m+[m
+ .../meshes/Romanoff_Small_Utility_Caddy_cof.stl    |   Bin [31m0[m -> [32m68184[m bytes
+ .../Romanoff_Small_Utility_Caddy_cof_pink.dae      |    99 [32m+[m
+ .../world_models/caddy_pink/model.config           |    13 [32m+[m
+ .../world_models/caddy_pink/model.sdf              |    51 [32m+[m
+ .../meshes/Romanoff_Small_Utility_Caddy_cof.stl    |   Bin [31m0[m -> [32m68184[m bytes
+ .../Romanoff_Small_Utility_Caddy_cof_purple.dae    |    99 [32m+[m
+ .../world_models/caddy_purple/model.config         |    13 [32m+[m
+ .../world_models/caddy_purple/model.sdf            |    51 [32m+[m
+ .../meshes/Romanoff_Small_Utility_Caddy_cof.stl    |   Bin [31m0[m -> [32m68184[m bytes
+ .../Romanoff_Small_Utility_Caddy_cof_red.dae       |    99 [32m+[m
+ .../world_models/caddy_red/model.config            |    13 [32m+[m
+ .../world_models/caddy_red/model.sdf               |    51 [32m+[m
+ .../meshes/Romanoff_Small_Utility_Caddy_cof.stl    |   Bin [31m0[m -> [32m68184[m bytes
+ .../Romanoff_Small_Utility_Caddy_cof_yellow.dae    |    99 [32m+[m
+ .../world_models/caddy_yellow/model.config         |    13 [32m+[m
+ .../world_models/caddy_yellow/model.sdf            |    51 [32m+[m
+ .../cafe_table/materials/textures/Maple.png        |   Bin [31m0[m -> [32m81629[m bytes
+ .../materials/textures/Wood_Floor_Dark.png         |   Bin [31m0[m -> [32m100432[m bytes
+ .../world_models/cafe_table/meshes/cafe_table.dae  |   307 [32m+[m
+ .../world_models/cafe_table/model-1_4.sdf          |    42 [32m+[m
+ .../world_models/cafe_table/model.config           |    18 [32m+[m
+ .../world_models/cafe_table/model.sdf              |    42 [32m+[m
+ .../world_models/cafe_table/model.tar.gz           |   Bin [31m0[m -> [32m85625[m bytes
+ .../world_models/camera_base/model.config          |    11 [32m+[m
+ .../world_models/camera_base/model.sdf             |    45 [32m+[m
+ .../materials/scripts/camera_front.material        |    15 [32m+[m
+ .../materials/scripts/camera_silver.material       |    15 [32m+[m
+ .../materials/textures/camera_front.jpg            |   Bin [31m0[m -> [32m57192[m bytes
+ .../materials/textures/metal_shinny.jpg            |   Bin [31m0[m -> [32m634[m bytes
+ .../world_models/camera_fujica/meshes/camera.dae   |  8627 [32m+++[m
+ .../camera_fujica/meshes/camera_body.dae           |  5674 [32m++[m
+ .../camera_fujica/meshes/camera_front.dae          |  1159 [32m+[m
+ .../camera_fujica/meshes/camera_lenses.dae         |   830 [32m+[m
+ .../camera_fujica/meshes/camera_silver.dae         |  4205 [32m+[m
+ .../world_models/camera_fujica/meshes/model.dae    |  7976 [32m++[m
+ .../world_models/camera_fujica/model.config        |    11 [32m+[m
+ .../world_models/camera_fujica/model.sdf           |   133 [32m+[m
+ .../can_coke/materials/scripts/coke.material       |    14 [32m+[m
+ .../can_coke/materials/textures/coke.jpg           |   Bin [31m0[m -> [32m70133[m bytes
+ .../can_coke/materials/textures/fanta.jpg          |   Bin [31m0[m -> [32m3428834[m bytes
+ .../can_coke/materials/textures/pepsi.jpg          |   Bin [31m0[m -> [32m36882[m bytes
+ .../can_coke/materials/textures/sprite.jpg         |   Bin [31m0[m -> [32m20927[m bytes
+ .../world_models/can_coke/meshes/body.dae          |   292 [32m+[m
+ .../world_models/can_coke/meshes/coke.dae          |  1164 [32m+[m
+ .../world_models/can_coke/meshes/metal.dae         |  1121 [32m+[m
+ .../world_models/can_coke/model.config             |    11 [32m+[m
+ .../world_models/can_coke/model.sdf                |    71 [32m+[m
+ .../can_fanta/materials/scripts/fanta.material     |    14 [32m+[m
+ .../can_fanta/materials/textures/fanta.jpg         |   Bin [31m0[m -> [32m625867[m bytes
+ .../world_models/can_fanta/meshes/body.dae         |   292 [32m+[m
+ .../world_models/can_fanta/meshes/coke.dae         |  1164 [32m+[m
+ .../world_models/can_fanta/meshes/metal.dae        |  1121 [32m+[m
+ .../world_models/can_fanta/model.config            |    11 [32m+[m
+ .../world_models/can_fanta/model.sdf               |    71 [32m+[m
+ .../can_pepsi/materials/scripts/pepsi.material     |    14 [32m+[m
+ .../can_pepsi/materials/textures/pepsi.jpg         |   Bin [31m0[m -> [32m48398[m bytes
+ .../world_models/can_pepsi/meshes/body.dae         |   292 [32m+[m
+ .../world_models/can_pepsi/meshes/coke.dae         |  1164 [32m+[m
+ .../world_models/can_pepsi/meshes/metal.dae        |  1121 [32m+[m
+ .../world_models/can_pepsi/model.config            |    11 [32m+[m
+ .../world_models/can_pepsi/model.sdf               |    71 [32m+[m
+ .../can_sprite/materials/scripts/sprite.material   |    14 [32m+[m
+ .../can_sprite/materials/textures/sprite.jpg       |   Bin [31m0[m -> [32m21794[m bytes
+ .../world_models/can_sprite/meshes/body.dae        |   292 [32m+[m
+ .../world_models/can_sprite/meshes/coke.dae        |  1164 [32m+[m
+ .../world_models/can_sprite/meshes/metal.dae       |  1121 [32m+[m
+ .../world_models/can_sprite/model.config           |    11 [32m+[m
+ .../world_models/can_sprite/model.sdf              |    71 [32m+[m
+ .../world_models/candy_blue/meshes/candy.dae       |  1291 [32m+[m
+ .../world_models/candy_blue/meshes/candy_color.dae |   547 [32m+[m
+ .../world_models/candy_blue/meshes/candy_white.dae |   890 [32m+[m
+ .../world_models/candy_blue/model.config           |    11 [32m+[m
+ .../world_models/candy_blue/model.sdf              |    83 [32m+[m
+ .../world_models/candy_green/meshes/candy.dae      |  1291 [32m+[m
+ .../candy_green/meshes/candy_color.dae             |   547 [32m+[m
+ .../candy_green/meshes/candy_white.dae             |   890 [32m+[m
+ .../world_models/candy_green/model.config          |    11 [32m+[m
+ .../world_models/candy_green/model.sdf             |    85 [32m+[m
+ .../world_models/candy_orange/meshes/candy.dae     |  1291 [32m+[m
+ .../candy_orange/meshes/candy_color.dae            |   547 [32m+[m
+ .../candy_orange/meshes/candy_white.dae            |   890 [32m+[m
+ .../world_models/candy_orange/model.config         |    11 [32m+[m
+ .../world_models/candy_orange/model.sdf            |    83 [32m+[m
+ .../world_models/candy_purple/meshes/candy.dae     |  1291 [32m+[m
+ .../candy_purple/meshes/candy_color.dae            |   547 [32m+[m
+ .../candy_purple/meshes/candy_white.dae            |   890 [32m+[m
+ .../world_models/candy_purple/model.config         |    11 [32m+[m
+ .../world_models/candy_purple/model.sdf            |    83 [32m+[m
+ .../world_models/candy_red/meshes/candy.dae        |  1291 [32m+[m
+ .../world_models/candy_red/meshes/candy_color.dae  |   547 [32m+[m
+ .../world_models/candy_red/meshes/candy_white.dae  |   890 [32m+[m
+ .../world_models/candy_red/model.config            |    11 [32m+[m
+ .../world_models/candy_red/model.sdf               |    84 [32m+[m
+ .../materials/scripts/chair_1_cushion.material     |    15 [32m+[m
+ .../materials/scripts/chair_1_frame.material       |    15 [32m+[m
+ .../chair_1/materials/textures/fabric_1.jpg        |   Bin [31m0[m -> [32m71566[m bytes
+ .../chair_1/materials/textures/wood_black.jpg      |   Bin [31m0[m -> [32m23665[m bytes
+ .../chair_1/materials/textures/wood_black_1.jpg    |   Bin [31m0[m -> [32m796735[m bytes
+ .../chair_1/materials/textures/wood_black_3.png    |   Bin [31m0[m -> [32m638222[m bytes
+ .../world_models/chair_1/meshes/cushions.dae       |  1741 [32m+[m
+ .../world_models/chair_1/meshes/frame.dae          |  1947 [32m+[m
+ .../world_models/chair_1/meshes/model.dae          |  1735 [32m+[m
+ .../world_models/chair_1/model.config              |    11 [32m+[m
+ src/bot_description/world_models/chair_1/model.sdf |    71 [32m+[m
+ .../materials/scripts/chair_2_cushion.material     |    15 [32m+[m
+ .../materials/scripts/chair_2_frame.material       |    15 [32m+[m
+ .../chair_2/materials/textures/fabric_red.jpg      |   Bin [31m0[m -> [32m35492[m bytes
+ .../chair_2/materials/textures/wood_light.png      |   Bin [31m0[m -> [32m102184[m bytes
+ .../world_models/chair_2/meshes/cushion.dae        |  1476 [32m+[m
+ .../world_models/chair_2/meshes/frame.dae          |  3822 [32m+[m
+ .../world_models/chair_2/meshes/model.dae          |  4104 [32m+[m
+ .../world_models/chair_2/model.config              |    11 [32m+[m
+ src/bot_description/world_models/chair_2/model.sdf |    71 [32m+[m
+ .../world_models/chair_3/meshes/model.dae          |   515 [32m+[m
+ .../world_models/chair_3/model.config              |    11 [32m+[m
+ src/bot_description/world_models/chair_3/model.sdf |    39 [32m+[m
+ .../materials/scripts/chair_set_1.material         |    15 [32m+[m
+ .../materials/textures/fabric_black.jpg            |   Bin [31m0[m -> [32m5852798[m bytes
+ .../chair_set_1/meshes/chair_cushions.dae          |   395 [32m+[m
+ .../chair_set_1/meshes/chair_frame.dae             |   201 [32m+[m
+ .../world_models/chair_set_1/meshes/chair_full.dae |   511 [32m+[m
+ .../world_models/chair_set_1/meshes/model.dae      |   815 [32m+[m
+ .../chair_set_1/meshes/sofa_cushions_back.dae      |   277 [32m+[m
+ .../world_models/chair_set_1/model.config          |    11 [32m+[m
+ .../world_models/chair_set_1/model.sdf             |   107 [32m+[m
+ .../materials/scripts/chair_set_2.material         |    15 [32m+[m
+ .../materials/textures/fabric_green.jpg            |   Bin [31m0[m -> [32m650049[m bytes
+ .../chair_set_2/meshes/chair_cushions.dae          |   264 [32m+[m
+ .../chair_set_2/meshes/chair_frame.dae             |   911 [32m+[m
+ .../world_models/chair_set_2/meshes/chair_full.dae |  1150 [32m+[m
+ .../world_models/chair_set_2/meshes/model.dae      |  1853 [32m+[m
+ .../world_models/chair_set_2/model.config          |    11 [32m+[m
+ .../world_models/chair_set_2/model.sdf             |    71 [32m+[m
+ .../materials/scripts/chair_set_3_cushion.material |    15 [32m+[m
+ .../materials/scripts/chair_set_3_frame.material   |    15 [32m+[m
+ .../chair_set_3/materials/textures/bamboo.jpg      |   Bin [31m0[m -> [32m337294[m bytes
+ .../materials/textures/fabric_red_dark.jpg         |   Bin [31m0[m -> [32m350960[m bytes
+ .../chair_set_3/meshes/chair_cushions.dae          |   297 [32m+[m
+ .../chair_set_3/meshes/chair_frame.dae             |   396 [32m+[m
+ .../world_models/chair_set_3/meshes/chair_full.dae |   512 [32m+[m
+ .../chair_set_3/meshes/cushion_single.dae          |   256 [32m+[m
+ .../world_models/chair_set_3/meshes/model.dae      |   929 [32m+[m
+ .../world_models/chair_set_3/model.config          |    11 [32m+[m
+ .../world_models/chair_set_3/model.sdf             |    71 [32m+[m
+ .../world_models/city_main_square/meshes/model.dae |  1468 [32m+[m
+ .../world_models/city_main_square/model.config     |    16 [32m+[m
+ .../world_models/city_main_square/model.sdf        |    22 [32m+[m
+ .../city_osm_roundabout/meshes/model.dae           | 29455 [32m+++++++[m
+ .../world_models/city_osm_roundabout/model.config  |    16 [32m+[m
+ .../world_models/city_osm_roundabout/model.sdf     |    22 [32m+[m
+ .../materials/textures/city_terrain (original).jpg |   Bin [31m0[m -> [32m125656[m bytes
+ .../materials/textures/city_terrain.jpg            |   Bin [31m0[m -> [32m11336[m bytes
+ .../city_terrain/materials/textures/forest.jpg     |   Bin [31m0[m -> [32m3740822[m bytes
+ .../world_models/city_terrain/model.config         |    16 [32m+[m
+ .../world_models/city_terrain/model.sdf            |    76 [32m+[m
+ .../world_models/clock_blue/meshes/body.dae        |  1777 [32m+[m
+ .../world_models/clock_blue/meshes/face.dae        |   926 [32m+[m
+ .../world_models/clock_blue/meshes/hands.dae       |  2546 [32m+[m
+ .../world_models/clock_blue/model.config           |    11 [32m+[m
+ .../world_models/clock_blue/model.sdf              |   101 [32m+[m
+ .../world_models/clock_digital/meshes/base.dae     |   634 [32m+[m
+ .../world_models/clock_digital/meshes/x1.dae       |  1855 [32m+[m
+ .../world_models/clock_digital/model.config        |    11 [32m+[m
+ .../world_models/clock_digital/model.sdf           |   108 [32m+[m
+ .../coca_cola/materials/scripts/coke.material      |    15 [32m+[m
+ .../coca_cola/materials/textures/cokecan.jpg       |   Bin [31m0[m -> [32m257952[m bytes
+ .../world_models/coca_cola/meshes/aluminum.jpg     |   Bin [31m0[m -> [32m18834[m bytes
+ .../coca_cola/meshes/can_ring_pull_end_centre.png  |   Bin [31m0[m -> [32m39222[m bytes
+ .../world_models/coca_cola/meshes/coke.dae         |   248 [32m+[m
+ .../world_models/coca_cola/meshes/coke_uv_map.jpg  |   Bin [31m0[m -> [32m38495[m bytes
+ .../world_models/coca_cola/model.config            |    17 [32m+[m
+ .../world_models/coca_cola/model.sdf               |    35 [32m+[m
+ .../materials/scripts/coffee_pat.material          |    15 [32m+[m
+ .../coffee_box/materials/textures/coffee_box.jpg   |   Bin [31m0[m -> [32m188117[m bytes
+ .../world_models/coffee_box/model.config           |    11 [32m+[m
+ .../world_models/coffee_box/model.sdf              |    38 [32m+[m
+ .../materials/scripts/coffee_body.material         |    15 [32m+[m
+ .../materials/scripts/coffee_drain.material        |    15 [32m+[m
+ .../materials/scripts/coffee_panel.material        |    15 [32m+[m
+ .../materials/scripts/coffee_shaft.material        |    15 [32m+[m
+ .../materials/textures/black_metal.jpg             |   Bin [31m0[m -> [32m243518[m bytes
+ .../coffee_machine/materials/textures/drain.jpg    |   Bin [31m0[m -> [32m19968[m bytes
+ .../coffee_machine/materials/textures/panel.jpg    |   Bin [31m0[m -> [32m693915[m bytes
+ .../coffee_machine/materials/textures/steel.jpg    |   Bin [31m0[m -> [32m2849[m bytes
+ .../world_models/coffee_machine/meshes/body.dae    |  4017 [32m+[m
+ .../coffee_machine/meshes/coffee_machine.dae       |  6001 [32m++[m
+ .../world_models/coffee_machine/meshes/drain.dae   |   338 [32m+[m
+ .../world_models/coffee_machine/meshes/model.dae   |  6850 [32m++[m
+ .../world_models/coffee_machine/meshes/panel.dae   |   883 [32m+[m
+ .../world_models/coffee_machine/meshes/sivler.dae  |  2578 [32m+[m
+ .../world_models/coffee_machine/model.config       |    11 [32m+[m
+ .../world_models/coffee_machine/model.sdf          |   131 [32m+[m
+ .../world_models/coffee_spill/meshes/spill.dae     |   425 [32m+[m
+ .../world_models/coffee_spill/model.config         |    11 [32m+[m
+ .../world_models/coffee_spill/model.sdf            |    54 [32m+[m
+ .../world_models/coffee_table_1/meshes/base.dae    |  1120 [32m+[m
+ .../world_models/coffee_table_1/meshes/glass.dae   |   922 [32m+[m
+ .../world_models/coffee_table_1/meshes/mesh.dae    | 15097 [32m++++[m
+ .../world_models/coffee_table_1/meshes/model.dae   | 15500 [32m++++[m
+ .../coffee_table_1/meshes/surfe_base.dae           |  1245 [32m+[m
+ .../world_models/coffee_table_1/model.config       |    11 [32m+[m
+ .../world_models/coffee_table_1/model.sdf          |   108 [32m+[m
+ .../scripts/coffee_table_set_1_frame.material      |    15 [32m+[m
+ .../scripts/coffee_table_set_1_surf.material       |    15 [32m+[m
+ .../materials/textures/leather.jpg                 |   Bin [31m0[m -> [32m747508[m bytes
+ .../materials/textures/wood_dark_1.jpg             |   Bin [31m0[m -> [32m15266[m bytes
+ .../coffee_table_set_1/meshes/model.dae            |  7563 [32m++[m
+ .../meshes/table_large_frame.dae                   |  2317 [32m+[m
+ .../coffee_table_set_1/meshes/table_large_full.dae |  3575 [32m+[m
+ .../coffee_table_set_1/meshes/table_large_mid.dae  |  1365 [32m+[m
+ .../coffee_table_set_1/meshes/table_large_top.dae  |  1681 [32m+[m
+ .../coffee_table_set_1/meshes/tables.dae           |  5865 [32m++[m
+ .../world_models/coffee_table_set_1/model.config   |    11 [32m+[m
+ .../world_models/coffee_table_set_1/model.sdf      |    99 [32m+[m
+ .../coffee_table_set_2/meshes/model.dae            |  7783 [32m++[m
+ .../coffee_table_set_2/meshes/table_large_base.dae |  5901 [32m++[m
+ .../coffee_table_set_2/meshes/table_large_full.dae |  6123 [32m++[m
+ .../meshes/table_large_surface.dae                 |   565 [32m+[m
+ .../coffee_table_set_2/meshes/tables.dae           |  6507 [32m++[m
+ .../world_models/coffee_table_set_2/model.config   |    11 [32m+[m
+ .../world_models/coffee_table_set_2/model.sdf      |    71 [32m+[m
+ .../world_models/computer_case/meshes/case.dae     |  8247 [32m++[m
+ .../world_models/computer_case/model.config        |    11 [32m+[m
+ .../world_models/computer_case/model.sdf           |    40 [32m+[m
+ .../textures/Construction_Cone_Diffuse.png         |   Bin [31m0[m -> [32m468036[m bytes
+ .../meshes/construction_cone.dae                   |   163 [32m+[m
+ .../construction_cone_small/model.config           |    22 [32m+[m
+ .../world_models/construction_cone_small/model.sdf |    34 [32m+[m
+ .../materials/textures/AgriBakeLarge.jpg           |   Bin [31m0[m -> [32m25138896[m bytes
+ ...rrugatedIronSheet002_METALNESS_3K_METALNESS.jpg |   Bin [31m0[m -> [32m610762[m bytes
+ ...lsPolycrystallineTypeBFramedClean001_COL_3K.jpg |   Bin [31m0[m -> [32m6403960[m bytes
+ .../textures/WoodPlanksWorn33_COL_VAR1_3K.jpg      |   Bin [31m0[m -> [32m2468641[m bytes
+ .../textures/WoodPlanksWornRed33_COL_VAR1_3K.jpg   |   Bin [31m0[m -> [32m3141794[m bytes
+ .../textures/WoodPlanksWornWhite33_COL_VAR1_3K.jpg |   Bin [31m0[m -> [32m1981547[m bytes
+ .../cpr_agriculture/meshes/agriculture_world.dae   |  3088 [32m+[m
+ .../world_models/cpr_agriculture/model.config      |    11 [32m+[m
+ .../world_models/cpr_agriculture/model.sdf         |    55 [32m+[m
+ .../textures/ConcreteWall001_COL_VAR1_3K.jpg       |   Bin [31m0[m -> [32m1284085[m bytes
+ .../ConcreteWall001_COL_VAR1_3K.jpg.001.jpg        |   Bin [31m0[m -> [32m1284085[m bytes
+ .../materials/textures/InspectionBakeLarge.jpg     |   Bin [31m0[m -> [32m18965682[m bytes
+ ...etalSpottyDiscoloration001_COL_3K_METALNESS.jpg |   Bin [31m0[m -> [32m3685020[m bytes
+ ...tyDiscoloration001_COL_3K_METALNESS.jpg.001.jpg |   Bin [31m0[m -> [32m3685020[m bytes
+ ...lsPolycrystallineTypeBFramedClean001_COL_3K.jpg |   Bin [31m0[m -> [32m6403960[m bytes
+ ...ystallineTypeBFramedClean001_COL_3K.jpg.001.jpg |   Bin [31m0[m -> [32m6403960[m bytes
+ .../textures/WoodPlanksWorn33_COL_VAR1_3K.jpg      |   Bin [31m0[m -> [32m2468641[m bytes
+ .../WoodPlanksWorn33_COL_VAR1_3K.jpg.001.jpg       |   Bin [31m0[m -> [32m2468641[m bytes
+ .../cpr_inspection/meshes/inspection_water.dae     |   104 [32m+[m
+ .../cpr_inspection/meshes/inspection_world.dae     |   634 [32m+[m
+ .../world_models/cpr_inspection/model.config       |    11 [32m+[m
+ .../world_models/cpr_inspection/model.sdf          |    88 [32m+[m
+ .../textures/Bricks01_COL_VAR1_3K.jpg.002.jpg      |   Bin [31m0[m -> [32m5218892[m bytes
+ .../ConcreteWall001_COL_VAR1_3K.jpg.002.jpg        |   Bin [31m0[m -> [32m1284085[m bytes
+ .../textures/GroundClay002_COL_VAR1_3K.jpg.001.jpg |   Bin [31m0[m -> [32m8637461[m bytes
+ ...DesignRugStarryNight001_COL_VAR1_3K.jpg.001.jpg |   Bin [31m0[m -> [32m5226220[m bytes
+ ...alCorrodedHeavy001_COL_3K_METALNESS.jpg.002.jpg |   Bin [31m0[m -> [32m5507306[m bytes
+ ...IronSheet002_METALNESS_3K_METALNESS.jpg.002.jpg |   Bin [31m0[m -> [32m610762[m bytes
+ ...tyDiscoloration001_COL_3K_METALNESS.jpg.002.jpg |   Bin [31m0[m -> [32m3685020[m bytes
+ .../textures/Tiles05_COL_VAR1_3K.jpg.001.jpg       |   Bin [31m0[m -> [32m4867894[m bytes
+ ...ilesRectangularMirrorGray001_COL_3K.jpg.001.jpg |   Bin [31m0[m -> [32m1138777[m bytes
+ .../textures/WoodFlooring044_COL_3K.jpg.001.jpg    |   Bin [31m0[m -> [32m8977251[m bytes
+ .../textures/WoodFlooring061_COL_3K.jpg.001.jpg    |   Bin [31m0[m -> [32m7483669[m bytes
+ ...ringMahoganyAfricanSanded001_COL_3K.jpg.001.jpg |   Bin [31m0[m -> [32m5250519[m bytes
+ .../WoodPlanksWorn33_COL_VAR1_3K.jpg.002.jpg       |   Bin [31m0[m -> [32m2468641[m bytes
+ .../cpr_office/materials/textures/cardboard.jpg    |   Bin [31m0[m -> [32m128851[m bytes
+ .../cpr_office/materials/textures/concrete_bag.jpg |   Bin [31m0[m -> [32m47256[m bytes
+ .../cpr_office/materials/textures/cp_walls.jpg     |   Bin [31m0[m -> [32m774[m bytes
+ .../cpr_office/materials/textures/whiteboard.jpg   |   Bin [31m0[m -> [32m168454[m bytes
+ .../world_models/cpr_office/meshes/office.dae      |  3370 [32m+[m
+ .../world_models/cpr_office/model.config           |    11 [32m+[m
+ .../world_models/cpr_office/model.sdf              |    55 [32m+[m
+ .../textures/Bricks01_COL_VAR1_3K.jpg.002.jpg      |   Bin [31m0[m -> [32m5218892[m bytes
+ .../ConcreteWall001_COL_VAR1_3K.jpg.002.jpg        |   Bin [31m0[m -> [32m1284085[m bytes
+ .../textures/GroundClay002_COL_VAR1_3K.jpg.001.jpg |   Bin [31m0[m -> [32m8637461[m bytes
+ ...DesignRugStarryNight001_COL_VAR1_3K.jpg.001.jpg |   Bin [31m0[m -> [32m5226220[m bytes
+ ...alCorrodedHeavy001_COL_3K_METALNESS.jpg.002.jpg |   Bin [31m0[m -> [32m5507306[m bytes
+ ...IronSheet002_METALNESS_3K_METALNESS.jpg.002.jpg |   Bin [31m0[m -> [32m610762[m bytes
+ ...tyDiscoloration001_COL_3K_METALNESS.jpg.002.jpg |   Bin [31m0[m -> [32m3685020[m bytes
+ .../textures/Tiles05_COL_VAR1_3K.jpg.001.jpg       |   Bin [31m0[m -> [32m4867894[m bytes
+ ...ilesRectangularMirrorGray001_COL_3K.jpg.001.jpg |   Bin [31m0[m -> [32m1138777[m bytes
+ .../textures/WoodFlooring044_COL_3K.jpg.001.jpg    |   Bin [31m0[m -> [32m8977251[m bytes
+ .../textures/WoodFlooring061_COL_3K.jpg.001.jpg    |   Bin [31m0[m -> [32m7483669[m bytes
+ ...ringMahoganyAfricanSanded001_COL_3K.jpg.001.jpg |   Bin [31m0[m -> [32m5250519[m bytes
+ .../WoodPlanksWorn33_COL_VAR1_3K.jpg.002.jpg       |   Bin [31m0[m -> [32m2468641[m bytes
+ .../materials/textures/cardboard.jpg               |   Bin [31m0[m -> [32m128851[m bytes
+ .../materials/textures/concrete_bag.jpg            |   Bin [31m0[m -> [32m47256[m bytes
+ .../materials/textures/cp_walls.jpg                |   Bin [31m0[m -> [32m774[m bytes
+ .../materials/textures/whiteboard.jpg              |   Bin [31m0[m -> [32m168454[m bytes
+ .../meshes/office_construction.dae                 |  4423 [32m++[m
+ .../cpr_office_construction/model.config           |    11 [32m+[m
+ .../world_models/cpr_office_construction/model.sdf |    55 [32m+[m
+ .../world_models/cube_b/model.config               |    11 [32m+[m
+ src/bot_description/world_models/cube_b/model.sdf  |   104 [32m+[m
+ .../world_models/cube_bg/model.config              |    11 [32m+[m
+ src/bot_description/world_models/cube_bg/model.sdf |   104 [32m+[m
+ .../world_models/cube_g/model.config               |    11 [32m+[m
+ src/bot_description/world_models/cube_g/model.sdf  |   104 [32m+[m
+ .../world_models/cube_gy/model.config              |    11 [32m+[m
+ src/bot_description/world_models/cube_gy/model.sdf |   104 [32m+[m
+ .../world_models/cube_o/model.config               |    11 [32m+[m
+ src/bot_description/world_models/cube_o/model.sdf  |   104 [32m+[m
+ .../world_models/cube_or/model.config              |    11 [32m+[m
+ src/bot_description/world_models/cube_or/model.sdf |   104 [32m+[m
+ .../world_models/cube_r/model.config               |    11 [32m+[m
+ src/bot_description/world_models/cube_r/model.sdf  |   104 [32m+[m
+ .../world_models/cube_rv/model.config              |    11 [32m+[m
+ src/bot_description/world_models/cube_rv/model.sdf |   104 [32m+[m
+ .../world_models/cube_v/model.config               |    11 [32m+[m
+ src/bot_description/world_models/cube_v/model.sdf  |   104 [32m+[m
+ .../world_models/cube_vb/model.config              |    11 [32m+[m
+ src/bot_description/world_models/cube_vb/model.sdf |   104 [32m+[m
+ .../world_models/cube_y/model.config               |    11 [32m+[m
+ src/bot_description/world_models/cube_y/model.sdf  |   104 [32m+[m
+ .../world_models/cube_yo/model.config              |    11 [32m+[m
+ src/bot_description/world_models/cube_yo/model.sdf |   104 [32m+[m
+ .../world_models/cup_blue/meshes/cup1.dae          |   295 [32m+[m
+ .../world_models/cup_blue/model.config             |    11 [32m+[m
+ .../world_models/cup_blue/model.sdf                |    40 [32m+[m
+ .../world_models/cup_glass/meshes/cup_glass.dae    |   165 [32m+[m
+ .../world_models/cup_glass/model.config            |    11 [32m+[m
+ .../world_models/cup_glass/model.sdf               |    42 [32m+[m
+ .../cup_glass_hex/meshes/cup_glass2.dae            |   432 [32m+[m
+ .../world_models/cup_glass_hex/model.config        |    11 [32m+[m
+ .../world_models/cup_glass_hex/model.sdf           |    40 [32m+[m
+ .../world_models/cup_green/meshes/edges.dae        |  1349 [32m+[m
+ .../world_models/cup_green/meshes/inner_red.dae    |  1253 [32m+[m
+ .../world_models/cup_green/meshes/outer_green.dae  |   720 [32m+[m
+ .../world_models/cup_green/model.config            |    11 [32m+[m
+ .../world_models/cup_green/model.sdf               |   102 [32m+[m
+ .../world_models/cup_paper/meshes/base.dae         |   490 [32m+[m
+ .../world_models/cup_paper/meshes/lid.dae          |   560 [32m+[m
+ .../world_models/cup_paper/model.config            |    11 [32m+[m
+ .../world_models/cup_paper/model.sdf               |    72 [32m+[m
+ .../world_models/cup_yellow/meshes/cup.dae         |   435 [32m+[m
+ .../world_models/cup_yellow/meshes/cup_2.dae       |   275 [32m+[m
+ .../world_models/cup_yellow/meshes/drink.dae       |   377 [32m+[m
+ .../world_models/cup_yellow/model.config           |    11 [32m+[m
+ .../world_models/cup_yellow/model.sdf              |    77 [32m+[m
+ .../curtain_striped/curtain_striped.sdf            |    18 [32m+[m
+ .../world_models/curtain_striped/model.config      |    15 [32m+[m
+ .../curtain_striped/shower_curtain.dae             |   234 [32m+[m
+ .../shower_curtain/curtain_striped.png             |   Bin [31m0[m -> [32m1466705[m bytes
+ .../world_models/cyberzoo/cyberzoo.sdf             |   173 [32m+[m
+ .../world_models/cyberzoo/cyberzoo_cams.dae        |  1634 [32m+[m
+ .../cyberzoo/cyberzoo_cams/optitrack.png           |   Bin [31m0[m -> [32m23343[m bytes
+ .../world_models/cyberzoo/cyberzoo_floor.dae       |   391 [32m+[m
+ .../cyberzoo/cyberzoo_floor/grass_black.png        |   Bin [31m0[m -> [32m571282[m bytes
+ .../cyberzoo/cyberzoo_floor/grass_blue.png         |   Bin [31m0[m -> [32m621527[m bytes
+ .../cyberzoo/cyberzoo_floor/grass_green.png        |   Bin [31m0[m -> [32m455692[m bytes
+ .../world_models/cyberzoo/cyberzoo_lighting.dae    |  2658 [32m+[m
+ .../cyberzoo/cyberzoo_lighting_glow.dae            |   725 [32m+[m
+ .../cyberzoo_lighting_glow.material                |    18 [32m+[m
+ .../cyberzoo/cyberzoo_lighting_glow/tl_glow.png    |   Bin [31m0[m -> [32m3473[m bytes
+ .../world_models/cyberzoo/cyberzoo_net.dae         |   182 [32m+[m
+ .../cyberzoo/cyberzoo_net/cyberzoo_net.material    |    16 [32m+[m
+ .../world_models/cyberzoo/cyberzoo_net/net.png     |   Bin [31m0[m -> [32m2743[m bytes
+ .../world_models/cyberzoo/cyberzoo_outer_walls.dae |   208 [32m+[m
+ .../cyberzoo/cyberzoo_outer_walls/ceiling.png      |   Bin [31m0[m -> [32m19079[m bytes
+ .../cyberzoo/cyberzoo_outer_walls/wall.png         |   Bin [31m0[m -> [32m109827[m bytes
+ .../world_models/cyberzoo/cyberzoo_poles.dae       |   728 [32m+[m
+ .../cyberzoo_poles/cyberzoo_poles.material         |    15 [32m+[m
+ .../world_models/cyberzoo/cyberzoo_poles/pole.png  |   Bin [31m0[m -> [32m82442[m bytes
+ .../cyberzoo/cyberzoo_side_curtain.dae             |   128 [32m+[m
+ .../cyberzoo_side_curtain/wall_curtains.png        |   Bin [31m0[m -> [32m647218[m bytes
+ .../cyberzoo/cyberzoo_surroundings.dae             |  2307 [32m+[m
+ .../cyberzoo_surroundings/balcony_fence.png        |   Bin [31m0[m -> [32m102975[m bytes
+ .../cyberzoo/cyberzoo_surroundings/cabinets.png    |   Bin [31m0[m -> [32m174768[m bytes
+ .../cyberzoo/cyberzoo_surroundings/curtains.png    |   Bin [31m0[m -> [32m430156[m bytes
+ .../cyberzoo/cyberzoo_surroundings/curtains2.png   |   Bin [31m0[m -> [32m158876[m bytes
+ .../cyberzoo/cyberzoo_surroundings/floor.png       |   Bin [31m0[m -> [32m14176[m bytes
+ .../cyberzoo/cyberzoo_surroundings/pathway.png     |   Bin [31m0[m -> [32m82937[m bytes
+ .../cyberzoo/cyberzoo_surroundings/press.png       |   Bin [31m0[m -> [32m99732[m bytes
+ .../cyberzoo/cyberzoo_surroundings/press_block.png |   Bin [31m0[m -> [32m5180[m bytes
+ .../cyberzoo_surroundings/press_block_side.png     |   Bin [31m0[m -> [32m1232[m bytes
+ .../cyberzoo/cyberzoo_surroundings/red_cart.png    |   Bin [31m0[m -> [32m96049[m bytes
+ .../cyberzoo/cyberzoo_surroundings/shelves.png     |   Bin [31m0[m -> [32m101592[m bytes
+ .../cyberzoo/cyberzoo_surroundings/table.png       |   Bin [31m0[m -> [32m46065[m bytes
+ .../cyberzoo/cyberzoo_surroundings/white_box.png   |   Bin [31m0[m -> [32m255369[m bytes
+ .../cyberzoo/cyberzoo_surroundings/white_brick.png |   Bin [31m0[m -> [32m47952[m bytes
+ .../cyberzoo_surroundings/workshop_door.png        |   Bin [31m0[m -> [32m359542[m bytes
+ .../world_models/cyberzoo/cyberzoo_toolcart.dae    |   132 [32m+[m
+ .../cyberzoo_toolcart/cyberzoo_toolcart.material   |    16 [32m+[m
+ .../cyberzoo_toolcart/toolcart_transparent.png     |   Bin [31m0[m -> [32m96071[m bytes
+ .../world_models/cyberzoo/cyberzoo_walls.dae       |   208 [32m+[m
+ .../cyberzoo/cyberzoo_walls/ceiling.png            |   Bin [31m0[m -> [32m316471[m bytes
+ .../cyberzoo/cyberzoo_walls/wall_curtains.png      |   Bin [31m0[m -> [32m502245[m bytes
+ .../world_models/cyberzoo/cyberzoo_wires.dae       |   337 [32m+[m
+ .../world_models/cyberzoo/cyberzoo_wires/wire.png  |   Bin [31m0[m -> [32m4551[m bytes
+ .../world_models/cyberzoo/model.config             |    15 [32m+[m
+ .../world_models/cylinder_b/model.config           |    11 [32m+[m
+ .../world_models/cylinder_b/model.sdf              |   106 [32m+[m
+ .../world_models/cylinder_bg/model.config          |    11 [32m+[m
+ .../world_models/cylinder_bg/model.sdf             |   106 [32m+[m
+ .../world_models/cylinder_g/model.config           |    11 [32m+[m
+ .../world_models/cylinder_g/model.sdf              |   106 [32m+[m
+ .../world_models/cylinder_gy/model.config          |    11 [32m+[m
+ .../world_models/cylinder_gy/model.sdf             |   106 [32m+[m
+ .../world_models/cylinder_o/model.config           |    11 [32

@@ -1,0 +1,31 @@
+# Python virtual environment
+.venv/
+
+# ROS 2 build artifacts
+build/
+install/
+log/
+
+# Gazebo cache
+.gazebo/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# ROS bag/database files
+*.db3
+*.bag
+*.mcap
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Gazebo world model assets
+src/bot_description/world_models/
