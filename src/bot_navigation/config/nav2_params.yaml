@@ -7,32 +7,10 @@ planner_server:
     planner_plugins: ["GridBased"]
 
     GridBased:
-      plugin: "nav2_smac_planner::SmacPlannerHybrid"
-      tolerance: 0.2
-      downsample_costmap: false
-      downsampling_factor: 1
+      plugin: "nav2_navfn_planner::NavfnPlanner"
+      tolerance: 0.25
+      use_astar: true
       allow_unknown: true
-
-      max_iterations: 1000000
-      max_planning_time: 2.0
-
-      angle_quantization_bins: 72
-      minimum_turning_radius: 0.0
-
-      reverse_penalty: 2.0
-      change_penalty: 0.0
-      non_straight_penalty: 2.0
-      cost_penalty: 2.0
-
-      analytic_expansion_ratio: 3.5
-      analytic_expansion_max_length: 3.0
-
-      smooth_path: true
-      smoother:
-        w_smooth: 0.3
-        w_data: 0.2
-        tolerance: 1.0e-10
-        max_iterations: 1000
 
 global_costmap:
   global_costmap:
@@ -67,7 +45,7 @@ global_costmap:
         plugin: "nav2_costmap_2d::ObstacleLayer"
 
         enabled: true
-        observation_sources: scan
+        observation_sources: scan depth
 
         scan:
           topic: /scan
@@ -84,13 +62,25 @@ global_costmap:
 
           max_obstacle_height: 1.0
           min_obstacle_height: 0.0
+
+        depth:
+          topic: /camera/image_raw/points
+          data_type: PointCloud2
+          marking: true
+          clearing: true
+          obstacle_max_range: 4.5
+          obstacle_min_range: 0.15
+          max_obstacle_height: 2.0
+          min_obstacle_height: -0.07
+          raytrace_max_range: 5.0
+          raytrace_min_range: 0.0
           
         
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
 
-        cost_scaling_factor: 2.0
-        inflation_radius: 0.30
+        cost_scaling_factor: 2.8
+        inflation_radius: 0.40
 
       always_send_full_costmap: true
 
@@ -104,7 +94,7 @@ controller_server:
     min_y_velocity_threshold: 0.001
     min_theta_velocity_threshold: 0.001
 
-    failure_tolerance: 0.3
+    failure_tolerance: 0.5
 
     progress_checker_plugins: ["progress_checker"]
     goal_checker_plugins: ["goal_checker"]
@@ -112,8 +102,8 @@ controller_server:
 
     progress_checker:
       plugin: "nav2_controller::SimpleProgressChecker"
-      required_movement_radius: 0.15
-      movement_time_allowance: 5.0
+      required_movement_radius: 0.10
+      movement_time_allowance: 10.0
 
     goal_checker:
       plugin: "nav2_controller::SimpleGoalChecker"
@@ -124,7 +114,7 @@ controller_server:
     FollowPath:
       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
 
-      desired_linear_vel: 0.5
+      desired_linear_vel: 0.45
 
       lookahead_dist: 0.4
       min_lookahead_dist: 0.25
@@ -132,21 +122,21 @@ controller_server:
 
       lookahead_time: 1.5
 
-      rotate_to_heading_angular_vel: 1.0
-      rotate_to_heading_min_angle: 0.785
+      rotate_to_heading_angular_vel: 0.8
+      rotate_to_heading_min_angle: 1.047
 
       transform_tolerance: 0.1
       
       use_velocity_scaled_lookahead_dist: true
 
-      min_approach_linear_velocity: 0.05
-      approach_velocity_scaling_dist: 0.6
+      min_approach_linear_velocity: 0.10
+      approach_velocity_scaling_dist: 0.4
 
       use_regulated_linear_velocity_scaling: true
       use_cost_regulated_linear_velocity_scaling: true
 
-      cost_scaling_dist: 0.5
-      cost_scaling_gain: 1.0
+      cost_scaling_dist: 0.4
+      cost_scaling_gain: 0.2
 
       regulated_linear_scaling_min_radius: 0.9
       regulated_linear_scaling_min_speed: 0.25
@@ -212,7 +202,7 @@ local_costmap:
           topic: /camera/image_raw/points
           data_type: PointCloud2
           marking: true
-          clearing: false
+          clearing: true
           obstacle_max_range: 4.0
           obstacle_min_range: 0.20
           max_obstacle_height: 1.5
@@ -223,8 +213,8 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
 
-        cost_scaling_factor: 2.0
-        inflation_radius: 0.30
+        cost_scaling_factor: 2.8
+        inflation_radius: 0.40
 
       always_send_full_costmap: true
 

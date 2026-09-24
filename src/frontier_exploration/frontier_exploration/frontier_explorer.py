@@ -21,11 +21,11 @@ class FrontierExplorer(Node):
         self.nav = ActionClient(self, NavigateToPose, '/navigate_to_pose')
 
         self.last_cluster_sizes = None
-        # to check if its pursuing any goal (cant give two goals at a time)
+        # Check if pursuing any goal
         self.goal_active = False
 
         # Blacklisting & failure tracking
-        self.failed_goals = []  # List of (x, y) tuples
+        self.failed_goals = []  # List of (x, y) tuples for failed goals
         self.cluster_failure_counts = {}  # Map region -> count
         self.current_goal = None
 
@@ -49,10 +49,7 @@ class FrontierExplorer(Node):
         robot_x = transform.transform.translation.x
         robot_y = transform.transform.translation.y
 
-        # Robot footprint safety radius
-        robot_radius = 0.50
-
-        # frontier cells (free cells)
+        # Identify frontier cells (free cells bordering unknown space -1)
         frontier_cells = set()
         for y in range(1, height - 1):
             for x in range(1, width - 1):
@@ -80,7 +77,7 @@ class FrontierExplorer(Node):
                 if is_frontier:
                     frontier_cells.add((x, y))
 
-        #Clustering
+        # Clustering connected frontier cells
         clusters = []
         visited = set()
 
@@ -109,14 +106,14 @@ class FrontierExplorer(Node):
 
                 for nx, ny in neighbours:
                     if 0 <= nx < width and 0 <= ny < height:
-                        if (nx, ny,) in frontier_cells and (nx, ny) not in visited:
+                        if (nx, ny) in frontier_cells and (nx, ny) not in visited:
                             visited.add((nx, ny))
                             queue.append((nx, ny))
 
             clusters.append(cluster)
 
-        #Centroids and Safe Candidate Goals
-        min_frontier_size = 10
+        # Centroids and Candidate Goal Selection
+        min_frontier_size = 4
         frontier_threshold = 0.8
 
         cluster_info = []
@@ -134,7 +131,6 @@ class FrontierExplorer(Node):
 
             threshold_cells = frontier_threshold / resolution
 
-            # Candidate cells near centroid
             candidate_frontier_cells = [
                 (x, y)
                 for x, y in cluster
@@ -144,10 +140,9 @@ class FrontierExplorer(Node):
 
             candidate_frontier_count = len(candidate_frontier_cells)
 
-            # Search for free space candidate goal cells with adequate clearance
-            # known free space (0.3m to 0.8m)
-            min_pullback = int(0.3 / resolution)
-            max_pullback = int(0.8 / resolution)
+            # Search known free space near frontier (0.2m to 0.6m pullback)
+            min_pullback = max(1, int(0.2 / resolution))
+            max_pullback = int(0.6 / resolution)
 
             candidate_free_cells = set()
             for fx, fy in candidate_frontier_cells:
@@ -164,7 +159,7 @@ class FrontierExplorer(Node):
             candidate_free_cells = list(candidate_free_cells)
             candidate_free_count = len(candidate_free_cells)
 
-            # Filter candidates for safety: Primary 0.45m obstacle clearance, fallback 0.35m for narrow corridors
+            # Filter candidates for safety:
             safe_candidate_cells = []
             for candidate_x, candidate_y in candidate_free_cells:
                 if self.is_goal_safe(
@@ -174,14 +169,13 @@ class FrontierExplorer(Node):
                     width,
                     height,
                     resolution,
-                    obstacle_radius=0.45,
-                    unknown_radius=0.15,
+                    obstacle_radius=0.25,
+                    unknown_radius=0.10,
                 ):
                     safe_candidate_cells.append((candidate_x, candidate_y))
 
             safe_candidate_count = len(safe_candidate_cells)
 
-            # Fallback for narrow corridors / doorways (0.35m obstacle clearance)
             if not safe_candidate_cells:
                 for candidate_x, candidate_y in candidate_free_cells:
                     if self.is_goal_safe(
@@ -191,12 +185,12 @@ class FrontierExplorer(Node):
                         width,
                         height,
                         resolution,
-                        obstacle_radius=0.35,
-                        unknown_radius=0.15,
+                        obstacle_radius=0.18,
+                        unknown_radius=0.08,
                     ):
                         safe_candidate_cells.append((candidate_x, candidate_y))
 
-            # Select best candidate goal 
+            # Select best candidate goal closest to cluster centroid
             candidate_goal = None
             sorted_safe_cells = sorted(
                 safe_candidate_cells,
@@ -232,7 +226,7 @@ class FrontierExplorer(Node):
                 'safe_candidate_count': safe_candidate_count,
             })
 
-        # scoring and ranking of clusters
+        # Scoring and ranking of clusters
         for cluster in cluster_info:
             candidate_x, candidate_y = cluster['candidate_goal']
 
@@ -241,20 +235,20 @@ class FrontierExplorer(Node):
                 cluster['score'] = float('-inf')
                 continue
 
-            distance = ((candidate_x - robot_x)**2 + (candidate_y - robot_y)**2)**0.5
+            distance = math.hypot(candidate_x - robot_x, candidate_y - robot_y)
             cluster['distance'] = distance
 
-            # Reject candidate goals that are too close to the robot (< 0.60 m)
-            if distance < 0.9:
+            if distance < 0.35:
                 cluster['score'] = float('-inf')
                 continue
 
             # Look up failure count for this region
             failures = self.get_region_failures(cluster['centroid'][0], cluster['centroid'][1])
 
-            # Enhanced Scoring Formula: Penalize clusters with repeated failed attempts
-            penalty = 1.0 + 2.5 * failures
-            cluster['score'] = cluster['size'] / ((distance + 1.0) * penalty)
+            size_factor = math.pow(cluster['size'], 0.6)
+            dist_factor = max(distance, 0.4)
+            penalty = 1.0 + 3.0 * failures
+            cluster['score'] = size_factor / (dist_factor * penalty)
 
         valid_clusters = [
             cluster
@@ -277,11 +271,10 @@ class FrontierExplorer(Node):
             best_goal = best_cluster['candidate_goal']
             best_centroid = best_cluster['centroid']
 
-        #Goal
+        # Dispatch Goal
         if best_goal is not None and not self.goal_active:
-            # Compute smooth forward heading along travel vector from robot to target goal
             yaw = math.atan2(
-                best_goal[1] - robot_y, best_goal[0] - robot_x
+                best_centroid[1] - robot_y, best_centroid[0] - robot_x
             )
             self.send_goal(best_goal[0], best_goal[1], yaw, best_centroid)
 
@@ -313,13 +306,12 @@ class FrontierExplorer(Node):
         width,
         height,
         resolution,
-        obstacle_radius=0.35,
-        unknown_radius=0.15,
+        obstacle_radius=0.25,
+        unknown_radius=0.10,
     ):
-        """Checks if a goal cell has sufficient clearance from solid obstacles (0.35m)
-        and is placed in known free space (0.15m)."""
-        obstacle_cells = int(obstacle_radius / resolution)
-        unknown_cells = int(unknown_radius / resolution)
+        """Checks if a goal cell has sufficient clearance from solid obstacles and known space."""
+        obstacle_cells = max(1, int(obstacle_radius / resolution))
+        unknown_cells = max(1, int(unknown_radius / resolution))
 
         max_cells = max(obstacle_cells, unknown_cells)
 
@@ -341,12 +333,12 @@ class FrontierExplorer(Node):
                 index = check_y * width + check_x
                 val = data[index]
 
-                # check walls, tables, furniture
+                # Check walls / obstacles
                 if dist_sq <= obstacle_cells * obstacle_cells:
                     if val >= 50:  # Occupied / obstacle
                         return False
 
-                #known space around the target pose
+                # Known free space check around target pose
                 if dist_sq <= unknown_cells * unknown_cells:
                     if val == -1: 
                         return False
@@ -354,8 +346,8 @@ class FrontierExplorer(Node):
         return True
 
     def is_goal_blacklisted(self, goal_x, goal_y):
-        #checks if a candidate goal is within the blacklisted radius of any failed goal
-        blacklist_tolerance = 0.7  # 70 cm blacklist radius for failed goals
+        """Checks if a candidate goal is within 0.5m of any failed goal."""
+        blacklist_tolerance = 0.5  # 50 cm blacklist radius for failed goals
 
         for failed_x, failed_y in self.failed_goals:
             distance = math.hypot(goal_x - failed_x, goal_y - failed_y)
@@ -364,20 +356,19 @@ class FrontierExplorer(Node):
         return False
 
     def record_failed_goal(self, goal):
-        #record of failed goal and updates cluster failure count
+        """Records a failed goal and updates region failure count."""
         if goal is None:
             return
         self.failed_goals.append(goal)
-        self.get_logger().warn(f'Blacklisted Goal: ({goal[0]:.2f}, {goal[1]:.2f}) [Radius: 0.7m]')
+        self.get_logger().warn(f'Blacklisted Failed Goal: ({goal[0]:.2f}, {goal[1]:.2f}) [Radius: 0.5m]')
 
-        # Increment region failure counter
         key = (round(goal[0], 0), round(goal[1], 0))
         self.cluster_failure_counts[key] = (
             self.cluster_failure_counts.get(key, 0) + 1
         )
 
     def get_region_failures(self, cx, cy):
-        #gets number of failures recorded near region centroid
+        """Gets number of failures recorded near region centroid."""
         key = (round(cx, 0), round(cy, 0))
         return self.cluster_failure_counts.get(key, 0)
 
@@ -399,7 +390,8 @@ class FrontierExplorer(Node):
         if result.status == 4:
             self.get_logger().info('Navigation Succeeded!')
             if self.current_goal is not None:
-                self.failed_goals.append(self.current_goal)
+                key = (round(self.current_goal[0], 0), round(self.current_goal[1], 0))
+                self.cluster_failure_counts.pop(key, None)
         elif result.status == 5:
             self.get_logger().warn('Navigation Canceled.')
         elif result.status == 6:
@@ -422,7 +414,6 @@ class FrontierExplorer(Node):
         goal.pose.pose.position.y = goal_y
         goal.pose.pose.position.z = 0.0
 
-        # Valid unit quaternion facing yaw heading (towards frontier/wall for camera view)
         goal.pose.pose.orientation.x = 0.0
         goal.pose.pose.orientation.y = 0.0
         goal.pose.pose.orientation.z = math.sin(yaw / 2.0)

@@ -35325,7 +35325,7 @@
           <pose>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
-              <uri>/home/aras/Desktop/human_female/pupils.dae</uri>
+              <uri>model://human_female_1/meshes/pupils.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>

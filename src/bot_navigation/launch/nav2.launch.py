@@ -36,12 +36,23 @@ def generate_launch_description():
             ]
         )
 
+    default_bt_xml = os.path.join(
+        pkg_bot_navigation,
+        "config",
+        "navigate_to_pose_w_replanning_and_recovery.xml"
+    )
+
     bt = Node(
         package="nav2_bt_navigator",
         executable="bt_navigator",
         name="bt_navigator",
         output="screen",
-        parameters=[nav2_params]
+        parameters=[
+            nav2_params,
+            {
+                "default_nav_to_pose_bt_xml": default_bt_xml
+            }
+        ]
     )
 
     behavior = Node(
