@@ -8,7 +8,7 @@
 -->
 <root BTCPP_format="4" main_tree_to_execute="MainTree">
   <BehaviorTree ID="MainTree">
-    <RecoveryNode number_of_retries="6" name="NavigateRecovery">
+    <RecoveryNode number_of_retries="3" name="NavigateRecovery">
       <PipelineSequence name="NavigateWithReplanning">
         <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" topic_name="controller_selector"/>
         <PlannerSelector selected_planner="{selected_planner}" default_planner="GridBased" topic_name="planner_selector"/>
@@ -36,16 +36,20 @@
         </Fallback>
         <ReactiveFallback name="RecoveryFallback">
           <GoalUpdated/>
-          <RoundRobin name="RecoveryActions">
-            <Sequence name="ClearingAndBackup">
-              <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
-              <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
-              <BackUp backup_dist="0.35" backup_speed="0.15" error_code_id="{backup_code_id}"/>
-            </Sequence>
-            <Spin spin_dist="-1.57" error_code_id="{spin_error_code}"/>
-            <Spin spin_dist="1.57" error_code_id="{spin_error_code}"/>
-            <Wait wait_duration="2.0"/>
-          </RoundRobin>
+          <Sequence name="ClearingAndBackup">
+            <ClearEntireCostmap
+              name="ClearLocalCostmap-Subtree"
+              service_name="local_costmap/clear_entirely_local_costmap"/>
+
+            <ClearEntireCostmap
+              name="ClearGlobalCostmap-Subtree"
+              service_name="global_costmap/clear_entirely_global_costmap"/>
+
+            <BackUp
+              backup_dist="0.30"
+              backup_speed="0.15"
+              error_code_id="{backup_code_id}"/>
+          </Sequence>
         </ReactiveFallback>
       </Sequence>
     </RecoveryNode>

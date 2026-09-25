@@ -60,7 +60,15 @@ def generate_launch_description():
             executable="behavior_server",
             name="behavior_server",
             output="screen",
-            parameters=[nav2_params]
+            parameters=[
+                nav2_params,
+                {
+                    "enable_stamped_cmd_vel": True
+                }
+            ],
+            remappings=[
+                ("cmd_vel", "/diff_drive_controller/cmd_vel")
+            ]
         )
 
     global_costmap = Node(

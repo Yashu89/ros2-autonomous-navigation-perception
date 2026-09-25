@@ -67,7 +67,7 @@ global_costmap:
           topic: /camera/image_raw/points
           data_type: PointCloud2
           marking: true
-          clearing: true
+          clearing: false
           obstacle_max_range: 4.5
           obstacle_min_range: 0.15
           max_obstacle_height: 2.0
@@ -109,20 +109,20 @@ controller_server:
       plugin: "nav2_controller::SimpleGoalChecker"
       stateful: true
       xy_goal_tolerance: 0.20
-      yaw_goal_tolerance: 0.20
+      yaw_goal_tolerance: 0.50  # was 0.20 — looser to stop overshoot+correct spin near walls
 
     FollowPath:
       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
 
-      desired_linear_vel: 0.45
+      desired_linear_vel: 0.25
 
-      lookahead_dist: 0.4
-      min_lookahead_dist: 0.25
-      max_lookahead_dist: 0.6
+      lookahead_dist: 0.6
+      min_lookahead_dist: 0.4
+      max_lookahead_dist: 0.9
 
       lookahead_time: 1.5
 
-      rotate_to_heading_angular_vel: 0.8
+      rotate_to_heading_angular_vel: 0.2
       rotate_to_heading_min_angle: 1.047
 
       transform_tolerance: 0.1
@@ -138,10 +138,10 @@ controller_server:
       cost_scaling_dist: 0.4
       cost_scaling_gain: 0.2
 
-      regulated_linear_scaling_min_radius: 0.9
-      regulated_linear_scaling_min_speed: 0.25
+      regulated_linear_scaling_min_radius: 1.2
+      regulated_linear_scaling_min_speed: 0.20
 
-      use_rotate_to_heading: true
+      use_rotate_to_heading: false
       allow_reversing: false
 
       use_collision_detection: true
@@ -202,18 +202,18 @@ local_costmap:
           topic: /camera/image_raw/points
           data_type: PointCloud2
           marking: true
-          clearing: true
+          clearing: false
           obstacle_max_range: 4.0
           obstacle_min_range: 0.20
           max_obstacle_height: 1.5
-          min_obstacle_height: -0.07
+          min_obstacle_height: -0.08
           raytrace_max_range: 5.0
           raytrace_min_range: 0.0
         
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
 
-        cost_scaling_factor: 2.8
+        cost_scaling_factor: 2.2
         inflation_radius: 0.40
 
       always_send_full_costmap: true
@@ -254,9 +254,9 @@ behavior_server:
     
     simulated_ahead_time: 2.0
 
-    max_rotational_vel: 1.0
+    max_rotational_vel: 0.4
     min_rotational_vel: 0.1
-    rotational_acc_lim: 3.2
+    rotational_acc_lim: 1.0
 
 lifecycle_manager:
   ros__parameters:

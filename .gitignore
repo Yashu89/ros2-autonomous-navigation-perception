@@ -29,3 +29,7 @@ Thumbs.db
 
 # Gazebo world model assets
 src/bot_description/world_models/
+
+cmd_vel_out.txt
+joint_states.txt
+odom.txt

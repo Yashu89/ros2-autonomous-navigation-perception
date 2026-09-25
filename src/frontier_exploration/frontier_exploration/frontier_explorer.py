@@ -273,8 +273,11 @@ class FrontierExplorer(Node):
 
         # Dispatch Goal
         if best_goal is not None and not self.goal_active:
+            # Point yaw toward the goal position (the safe pullback cell), NOT the centroid.
+            # Centroid can be inside/behind a wall → atan2(centroid) forces the bot to
+            # spin toward the wall at goal arrival, causing the aggressive overshoot+correct loop.
             yaw = math.atan2(
-                best_centroid[1] - robot_y, best_centroid[0] - robot_x
+                best_goal[1] - robot_y, best_goal[0] - robot_x
             )
             self.send_goal(best_goal[0], best_goal[1], yaw, best_centroid)
 
