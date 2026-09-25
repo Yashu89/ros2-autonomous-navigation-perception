@@ -14,7 +14,7 @@ def generate_launch_description():
 
     pkg_bot_description = get_package_share_directory("bot_description")
     xacro_file = os.path.join(pkg_bot_description, "urdf", "bot.urdf.xacro")
-    default_world_path = os.path.join(pkg_bot_description, "worlds", "office_cpr.world")
+    default_world_path = os.path.join(pkg_bot_description, "worlds", "fetchit_challenge_tests.world")
 
     use_sim_time = LaunchConfiguration("use_sim_time", default=True)
     world_file = LaunchConfiguration("world", default=default_world_path)

@@ -1,4 +1,5 @@
 import math
+import time
 import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import OccupancyGrid
@@ -25,7 +26,8 @@ class FrontierExplorer(Node):
         self.goal_active = False
 
         # Blacklisting & failure tracking
-        self.failed_goals = []  # List of (x, y) tuples for failed goals
+        self.failed_goals = []  # List of (x, y, timestamp) tuples for failed goals
+        self.blacklist_expiry_sec = 90.0  # Failed goals expire after 90s
         self.cluster_failure_counts = {}  # Map region -> count
         self.current_goal = None
 
@@ -238,7 +240,7 @@ class FrontierExplorer(Node):
             distance = math.hypot(candidate_x - robot_x, candidate_y - robot_y)
             cluster['distance'] = distance
 
-            if distance < 0.35:
+            if distance < 0.25:
                 cluster['score'] = float('-inf')
                 continue
 
@@ -349,21 +351,28 @@ class FrontierExplorer(Node):
         return True
 
     def is_goal_blacklisted(self, goal_x, goal_y):
-        """Checks if a candidate goal is within 0.5m of any failed goal."""
+        """Checks if a candidate goal is within 0.5m of any non-expired failed goal."""
         blacklist_tolerance = 0.5  # 50 cm blacklist radius for failed goals
+        now = time.time()
 
-        for failed_x, failed_y in self.failed_goals:
+        # Prune expired entries
+        self.failed_goals = [
+            (fx, fy, t) for fx, fy, t in self.failed_goals
+            if (now - t) < self.blacklist_expiry_sec
+        ]
+
+        for failed_x, failed_y, _ in self.failed_goals:
             distance = math.hypot(goal_x - failed_x, goal_y - failed_y)
             if distance < blacklist_tolerance:
                 return True
         return False
 
     def record_failed_goal(self, goal):
-        """Records a failed goal and updates region failure count."""
+        """Records a failed goal with timestamp and updates region failure count."""
         if goal is None:
             return
-        self.failed_goals.append(goal)
-        self.get_logger().warn(f'Blacklisted Failed Goal: ({goal[0]:.2f}, {goal[1]:.2f}) [Radius: 0.5m]')
+        self.failed_goals.append((goal[0], goal[1], time.time()))
+        self.get_logger().warn(f'Blacklisted Failed Goal: ({goal[0]:.2f}, {goal[1]:.2f}) [Radius: 0.5m, Expires: {self.blacklist_expiry_sec}s]')
 
         key = (round(goal[0], 0), round(goal[1], 0))
         self.cluster_failure_counts[key] = (

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Custom Nav2 Behavior Tree with Prioritized BackUp Recovery & Bi-directional Spin.
-  When navigation encounters a blockage or obstacle collision:
-  1. Clears costmaps and executes BackUp (0.35m reverse) FIRST to disengage from the obstacle.
-  2. Tries Spin right (-1.57 rad) and Spin left (+1.57 rad) to test clearance in BOTH directions.
-  3. Waits briefly before retrying.
+  Custom Nav2 Behavior Tree — Minimal Recovery with Replan.
+  
+  Recovery logic (runs ONLY when navigation fails):
+  1. Clears both costmaps to remove stale obstacle data.
+  2. Tries BackUp 0.25m to disengage from obstacle.
+     If BackUp fails (wall behind) → tries Spin right (-90°).
+     If Spin right fails (wall on right) → tries Spin left (+90°).
+  3. After ANY recovery succeeds, RecoveryNode goes BACK to
+     NavigateWithReplanning → ComputePathToPose replans a new path.
+  
+  Max 3 recovery attempts. If all 3 fail → goal is aborted.
+  Each attempt only does the MINIMUM needed (Fallback stops at first success).
 -->
 <root BTCPP_format="4" main_tree_to_execute="MainTree">
   <BehaviorTree ID="MainTree">
     <RecoveryNode number_of_retries="3" name="NavigateRecovery">
+
+      <!-- ===== NORMAL NAVIGATION (with continuous 1Hz replanning) ===== -->
       <PipelineSequence name="NavigateWithReplanning">
         <ControllerSelector selected_controller="{selected_controller}" default_controller="FollowPath" topic_name="controller_selector"/>
         <PlannerSelector selected_planner="{selected_planner}" default_planner="GridBased" topic_name="planner_selector"/>
@@ -29,29 +38,29 @@
           </Sequence>
         </RecoveryNode>
       </PipelineSequence>
-      <Sequence>
+
+      <!-- After this succeeds → goes BACK to NavigateWithReplanning (replan) -->
+      <Sequence name="RecoverySequence">
         <Fallback>
           <WouldAControllerRecoveryHelp error_code="{follow_path_error_code}"/>
           <WouldAPlannerRecoveryHelp error_code="{compute_path_error_code}"/>
         </Fallback>
         <ReactiveFallback name="RecoveryFallback">
           <GoalUpdated/>
-          <Sequence name="ClearingAndBackup">
-            <ClearEntireCostmap
-              name="ClearLocalCostmap-Subtree"
-              service_name="local_costmap/clear_entirely_local_costmap"/>
-
-            <ClearEntireCostmap
-              name="ClearGlobalCostmap-Subtree"
-              service_name="global_costmap/clear_entirely_global_costmap"/>
-
-            <BackUp
-              backup_dist="0.30"
-              backup_speed="0.15"
-              error_code_id="{backup_code_id}"/>
+          <Sequence name="RecoveryActions">
+            <!-- Step 1: Always clear costmaps first -->
+            <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
+            <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+            <!-- Step 2: Try minimum needed — stops at first success -->
+            <Fallback name="DisengageFromObstacle">
+              <BackUp backup_dist="0.30" backup_speed="0.15" error_code_id="{backup_code_id}"/>
+              <Spin spin_dist="-0.6109" error_code_id="{spin_error_code}"/>
+              <Spin spin_dist="0.6109" error_code_id="{spin_error_code}"/>
+            </Fallback>
           </Sequence>
         </ReactiveFallback>
       </Sequence>
+
     </RecoveryNode>
   </BehaviorTree>
 </root>

@@ -80,7 +80,7 @@ global_costmap:
         plugin: "nav2_costmap_2d::InflationLayer"
 
         cost_scaling_factor: 2.8
-        inflation_radius: 0.40
+        inflation_radius: 0.55
 
       always_send_full_costmap: true
 
@@ -109,28 +109,28 @@ controller_server:
       plugin: "nav2_controller::SimpleGoalChecker"
       stateful: true
       xy_goal_tolerance: 0.20
-      yaw_goal_tolerance: 0.50  # was 0.20 — looser to stop overshoot+correct spin near walls
+      yaw_goal_tolerance: 0.30  # was 0.20 — looser to stop overshoot+correct spin near walls
 
     FollowPath:
       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
 
-      desired_linear_vel: 0.25
+      desired_linear_vel: 0.40
 
-      lookahead_dist: 0.6
-      min_lookahead_dist: 0.4
+      lookahead_dist: 0.55
+      min_lookahead_dist: 0.5
       max_lookahead_dist: 0.9
 
       lookahead_time: 1.5
 
-      rotate_to_heading_angular_vel: 0.2
-      rotate_to_heading_min_angle: 1.047
+      rotate_to_heading_angular_vel: 0.4
+      rotate_to_heading_min_angle: 0.785
 
       transform_tolerance: 0.1
       
       use_velocity_scaled_lookahead_dist: true
 
       min_approach_linear_velocity: 0.10
-      approach_velocity_scaling_dist: 0.4
+      approach_velocity_scaling_dist: 0.6
 
       use_regulated_linear_velocity_scaling: true
       use_cost_regulated_linear_velocity_scaling: true
@@ -139,9 +139,9 @@ controller_server:
       cost_scaling_gain: 0.2
 
       regulated_linear_scaling_min_radius: 1.2
-      regulated_linear_scaling_min_speed: 0.20
+      regulated_linear_scaling_min_speed: 0.12
 
-      use_rotate_to_heading: false
+      use_rotate_to_heading: true
       allow_reversing: false
 
       use_collision_detection: true
@@ -213,8 +213,8 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
 
-        cost_scaling_factor: 2.2
-        inflation_radius: 0.40
+        cost_scaling_factor: 2.8
+        inflation_radius: 0.55
 
       always_send_full_costmap: true
 
@@ -254,8 +254,8 @@ behavior_server:
     
     simulated_ahead_time: 2.0
 
-    max_rotational_vel: 0.4
-    min_rotational_vel: 0.1
+    max_rotational_vel: 0.5
+    min_rotational_vel: 0.3
     rotational_acc_lim: 1.0
 
 lifecycle_manager:
